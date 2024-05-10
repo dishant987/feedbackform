@@ -249,7 +249,7 @@ export async function feedBack(req, res) {
     const savedFeedback = await feedback.save();
 
     res.status(201).json({
-      message: "ho gaya lund submit",
+      message: "Submit Successfull",
       data: savedFeedback,
     });
   } catch (error) {
