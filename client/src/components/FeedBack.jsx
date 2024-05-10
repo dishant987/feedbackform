@@ -12,8 +12,25 @@ import CustomConfetti from './CustomConfetti';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { jwtDecode } from "jwt-decode";
 import toast from 'react-hot-toast';
+import { IMaskInput } from 'react-imask';
 
 const theme = createTheme();
+
+const TextMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
+    const { onChange, ...other } = props;
+    return (
+        <IMaskInput
+            {...other}
+            mask="00000 00000"
+            definitions={{
+                '#': /^\d{5} \d{5}$/,
+            }}
+            inputRef={ref}
+            onAccept={(value) => onChange({ target: { name: props.name, value } })}
+            overwrite
+        />
+    );
+});
 
 theme.typography.h3 = {
     fontSize: '1.2rem',
@@ -46,7 +63,8 @@ function getLabelText(value) {
 const validationSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     email: Yup.string().email('Invalid email').required('Email is required'),
-    phone: Yup.string().required('Phone number is required').matches(/^[0-9]{10}$/, 'Phone number must be 10 digits'),
+    // phone: Yup.string().required('Phone number is required').matches(/^[0-9]{10}$/, 'Phone number must be 10 digits'),
+    phone: Yup.string().required('Phone number is required').matches(/^\d{5} \d{5}$/, 'Phone number must be in the format: 00000 00000'),
     message: Yup.string().required('Message is required'),
 });
 
@@ -57,30 +75,30 @@ const FeedBack = () => {
     const [hover, setHover] = useState(-1);
     const [showConf, setShowConf] = useState(false)
     const [cookies] = useCookies(['accessToken']);
-  
+
 
     // const decoded = jwt_decode(token);
     // setDecodedToken(decoded);
     useEffect(() => {
         const token = cookies.accessToken;
-    
+
         if (token) {
-          const decoded = jwtDecode(token);
-          setDecodedToken(decoded);
+            const decoded = jwtDecode(token);
+            setDecodedToken(decoded);
         }
-      }, [cookies.accessToken]);
+    }, [cookies.accessToken]);
 
     const handleSubmit = async (values) => {
-        const {username} = decodedToken;
+        const { username } = decodedToken;
         console.log(username);
         setLoading(true)
-       
+
         console.log(values, rating);
         try {
             const response = await axios.post('http://localhost:3000/api/feedback', {
                 ...values,
                 rating: rating,
-                username:username
+                username: username
             }, {
                 headers: {
                     Authorization: `Bearer ${cookies.accessToken}`,
@@ -166,7 +184,19 @@ const FeedBack = () => {
                                         helperText={errors.email && touched.email ? errors.email : null}
                                     />
 
-
+                                    {/* 
+                                    <Field
+                                        as={TextField}
+                                        inputComponent={TextMaskCustom}
+                                        type="tel"
+                                        label="Mobile No."
+                                        name="phone"
+                                        placeholder='+91 00000 00000'
+                                        fullWidth
+                                        margin="normal"
+                                        error={errors.phone && touched.phone}
+                                        helperText={errors.phone && touched.phone ? errors.phone : null}
+                                    /> */}
                                     <Field
                                         as={TextField}
                                         type="tel"
@@ -177,6 +207,9 @@ const FeedBack = () => {
                                         margin="normal"
                                         error={errors.phone && touched.phone}
                                         helperText={errors.phone && touched.phone ? errors.phone : null}
+                                        InputProps={{
+                                            inputComponent: TextMaskCustom,
+                                        }}
                                     />
 
 
