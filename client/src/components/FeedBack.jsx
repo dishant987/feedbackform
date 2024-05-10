@@ -74,10 +74,7 @@ const FeedBack = () => {
         const {username} = decodedToken;
         console.log(username);
         setLoading(true)
-        setShowConf(true)
-        setTimeout(() => {
-            setShowConf(false)
-        }, 4000)
+       
         console.log(values, rating);
         try {
             const response = await axios.post('http://localhost:3000/api/feedback', {
@@ -90,7 +87,10 @@ const FeedBack = () => {
                 },
             });
             if (response.status === 201 && response.data.message === "Submit Successfull") {
-                
+                setShowConf(true)
+                setTimeout(() => {
+                    setShowConf(false)
+                }, 4000)
                 toast.success(response.data.message)
             }
             console.log(response);

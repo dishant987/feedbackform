@@ -53,7 +53,7 @@ export default function Login() {
                 toast.success(response.data.message)
 
 
-                // navigate('/feedback')
+                navigate('/feedback')
             }
             if (response.data.statuscode === 401 && response.data.message === "Invalid User credentials") {
                 toast.error(response.data.message)
