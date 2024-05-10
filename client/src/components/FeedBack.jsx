@@ -89,7 +89,7 @@ const FeedBack = () => {
                     Authorization: `Bearer ${cookies.accessToken}`,
                 },
             });
-            if (response.status === 201 && response.data.message === "ho gaya lund submit") {
+            if (response.status === 201 && response.data.message === "Submit Successfull") {
                 
                 toast.success(response.data.message)
             }
