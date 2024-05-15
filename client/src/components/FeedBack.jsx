@@ -13,6 +13,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { jwtDecode } from "jwt-decode";
 import toast from 'react-hot-toast';
 import { IMaskInput } from 'react-imask';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 
@@ -70,13 +71,13 @@ const validationSchema = Yup.object().shape({
 
 const FeedBack = () => {
     const [decodedToken, setDecodedToken] = useState(null);
-    const [rating, setRating] = useState(2);
+    const [rating, setRating] = useState(0);
     const [loading, setLoading] = useState(false);
     const [hover, setHover] = useState(-1);
     const [showConf, setShowConf] = useState(false)
     const [cookies] = useCookies(['accessToken']);
 
-
+    const navigate = useNavigate()
     // const decoded = jwt_decode(token);
     // setDecodedToken(decoded);
     useEffect(() => {
@@ -93,7 +94,7 @@ const FeedBack = () => {
         console.log(username);
         setLoading(true)
 
-        console.log(values, rating);
+       
         try {
             const response = await axios.post('http://localhost:3000/api/feedback', {
                 ...values,
@@ -110,6 +111,9 @@ const FeedBack = () => {
                     setShowConf(false)
                 }, 4000)
                 toast.success(response.data.message)
+                setTimeout(()=>{
+                    navigate('/logout')
+                },5000)
             }
             console.log(response);
         } catch (error) {
@@ -118,7 +122,7 @@ const FeedBack = () => {
         } finally {
             setLoading(false); // Stop loading
         }
-        console.log('Form submitted:', values);
+       
     };
 
     return (
@@ -170,7 +174,6 @@ const FeedBack = () => {
                                         error={errors.name && touched.name}
                                         helperText={errors.name && touched.name ? errors.name : null}
                                     />
-
 
                                     <Field
                                         as={TextField}

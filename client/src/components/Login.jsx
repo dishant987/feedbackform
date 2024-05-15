@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -25,6 +25,8 @@ const defaultTheme = createTheme();
 
 export default function Login() {
 
+
+
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false); // Add loading state
     const navigate = useNavigate()
@@ -33,7 +35,11 @@ export default function Login() {
     const handleTogglePasswordVisibility = () => {
         setShowPassword((prev) => !prev);
     };
-
+    useEffect(() => {
+        if (cookies.accessToken) {
+            navigate('/feedback'); // Redirect to feedback if user is already logged in
+        }
+    }, [cookies.accessToken, navigate]);
     const LoginSchema = Yup.object().shape({
         email: Yup.string().email('Invalid email').required('Required'),
         password: Yup.string().required('Required'),
@@ -48,14 +54,16 @@ export default function Login() {
                 const { accessToken, refreshToken } = response.data
                 const expires = new Date();
                 expires.setDate(expires.getDate() + 1);
-               
+
                 setCookie('accessToken', accessToken, { expires })
                 toast.success(response.data.message)
-
 
                 navigate('/feedback')
             }
             if (response.data.statuscode === 401 && response.data.message === "Invalid User credentials") {
+                toast.error(response.data.message)
+            }
+            if (response.data.statuscode === 404 && response.data.message === "User does not exist") {
                 toast.error(response.data.message)
             }
         } catch (error) {

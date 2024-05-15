@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { Feedback } from "../models/feedback.js";
 import { User } from "../models/user.js";
 import jwt from "jsonwebtoken";
@@ -20,6 +21,10 @@ const generateAccessTokenAndRefereshToken = async function (userId, res) {
     });
   }
 };
+
+function isValidObjectId(id) {
+  return mongoose.Types.ObjectId.isValid(id);
+}
 
 //signup
 export const signUp = async (req, res) => {
@@ -225,9 +230,68 @@ const refreshAccessToken = async (req, res) => {
 export async function adminLogin(req, res) {
   try {
     const { email, password } = req.body;
+    if (!password) {
+      return res.status(400).json({
+        statuscode: 400,
+        message: "Password is required",
+      });
+    }
+    if (!email) {
+      return res.status(400).json({
+        statuscode: 400,
+        message: "Email is required",
+      });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({
+        statuscode: 404,
+        message: "User does not exist",
+      });
+    }
+
+    const isPasswordValid = await user.isPasswordCorrect(password);
+    if (!isPasswordValid) {
+      return res.status(401).json({
+        statuscode: 401,
+        message: "Invalid user credentials",
+      });
+    }
+
+    if (user.role !== "admin") {
+      return res.status(403).json({
+        statuscode: 403,
+        message: "Only admins can access this route",
+      });
+    }
+
+    const { accessToken, refreshToken } =
+      await generateAccessTokenAndRefereshToken(user._id);
+
+    const LoggedInUser = await User.findById(user._id).select(
+      "-password -refreshToken"
+    );
+
+    const options = {
+      httpOnly: true,
+      secure: true,
+    };
+
+    return res
+      .cookie("adminaccessToken", accessToken, options)
+      .cookie("adminrefreshToken", refreshToken, options)
+      .status(200)
+      .json({
+        statuscode: 200,
+        user: LoggedInUser,
+        adminaccessToken: accessToken,
+        adminrefreshToken: refreshToken,
+        message: "Login successful",
+      });
   } catch (error) {
     console.log(error);
-    res.json({
+    res.status(500).json({
       statuscode: 500,
       message: error.message,
     });
@@ -236,12 +300,13 @@ export async function adminLogin(req, res) {
 
 export async function feedBack(req, res) {
   try {
-    const { name, email, phonenumber, rating, message, username } = req.body;
+    const { name, email, phone, rating, message, username } = req.body;
+
     const feedback = new Feedback({
       username,
       fullname: name,
       email,
-      phonenumber: String(phonenumber),
+      phonenumber: phone,
       rating,
       message,
     });
@@ -250,14 +315,110 @@ export async function feedBack(req, res) {
 
     res.status(201).json({
       message: "Submit Successfull",
-      data: savedFeedback,
+      data: phone,
     });
   } catch (error) {
     console.log(error);
-    res.json({
+    res.status(500).json({
       statuscode: 500,
       message: error.message,
       data: req.body,
+    });
+  }
+}
+
+export async function feedbackData(req, res) {
+  try {
+    const feedbackData = await Feedback.find();
+    res.status(200).json({
+      statuscode: 200,
+      message: "Feedback data retrieved successfully",
+      data: feedbackData,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      statuscode: 500,
+      message: error.message,
+    });
+  }
+}
+
+export async function adminfeedbackdelete(req, res) {
+  try {
+    const id = req.params.id;
+
+    if (!id || !isValidObjectId(id)) {
+      return res.status(400).json({ error: "Invalid feedback ID" });
+    }
+
+    const deletedFeedback = await Feedback.findByIdAndDelete(id);
+    if (!deletedFeedback) {
+      return res.status(404).json({ error: "Feedback not found" });
+    }
+
+    res
+      .status(200)
+      .json({ statuscode: 200, message: "Feedback deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      statuscode: 500,
+      message: error.message,
+    });
+  }
+}
+
+export async function getSingleFeedbackData(req, res) {
+  try {
+    const id = req.params.id;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "Invalid feedback id" });
+    }
+
+    const singleFeedback = await Feedback.findById(id);
+    if (!singleFeedback) {
+      return res.status(404).json({ error: "Feedback not found" });
+    }
+    res.status(200).json({ statuscode: 200, data: singleFeedback });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      statuscode: 500,
+      message: error.message,
+    });
+  }
+}
+
+export async function editFeedbackData(req, res) {
+  try {
+    const { fullname, email, phonenumber, rating, message, id } = req.body;
+    console.log(req.body);
+
+    const updatedFeedback = await Feedback.findByIdAndUpdate(
+      id,
+      {
+        fullname,
+        email,
+        phonenumber,
+        rating,
+        message,
+      },
+      { new: true }
+    );
+    if (!updatedFeedback) {
+      return res.status(404).json({ message: "Feedback not found" });
+    }
+
+    res.status(200).json({
+      message: "Feedback updated successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      statuscode: 500,
+      message: error.message,
     });
   }
 }

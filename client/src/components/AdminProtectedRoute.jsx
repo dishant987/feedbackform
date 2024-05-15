@@ -3,13 +3,13 @@ import { Route, Navigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
-    const [cookies] = useCookies(['accessToken']);
+    const [cookies] = useCookies(['adminaccessToken']);
 
     return (
-        cookies.accessToken ? (
+        cookies.adminaccessToken ? (
             <Component />
         ) : (
-            <Navigate to="/" />
+            <Navigate to="/adminlog" />
         )
     );
 };

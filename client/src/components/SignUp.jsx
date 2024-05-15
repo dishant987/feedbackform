@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -20,6 +20,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import LoadingButton from '@mui/lab/LoadingButton';
+import { useCookies } from 'react-cookie';
 
 const defaultTheme = createTheme();
 
@@ -35,6 +36,13 @@ export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false); // Add loading state
   const navigate = useNavigate()
+  const [cookies] = useCookies(['accessToken']);
+
+  useEffect(() => {
+    if (cookies.accessToken) {
+      navigate('/feedback'); // Redirect to feedback if user is already logged in
+    }
+  }, [cookies.accessToken]);
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
@@ -172,7 +180,7 @@ export default function SignUp() {
                   loading={loading}
                   loadingPosition="end"
                   variant="contained"
-                  >
+                >
                   Submit
                 </LoadingButton>
 

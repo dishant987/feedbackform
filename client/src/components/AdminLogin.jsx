@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,19 +11,28 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { IconButton, InputAdornment } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { useCookies } from 'react-cookie';
 
 const defaultTheme = createTheme();
 
 export default function AdminLogin() {
 
     const [showPassword, setShowPassword] = useState(false);
+    const [cookies, setCookie, removeCookie] = useCookies(['adminaccessToken']);
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (cookies.adminaccessToken) {
+            navigate('/feedbackdata'); // Redirect to feedback if user is already logged in
+        }
+    }, [cookies.adminaccessToken, navigate]);
     const handleTogglePasswordVisibility = () => {
         setShowPassword((prev) => !prev);
     };
@@ -35,17 +44,33 @@ export default function AdminLogin() {
     const handleSubmit = async (values) => {
         try {
             const response = await axios.post('http://localhost:3000/api/admin', values);
-            console.log(response.data);
-          
+            if (response.status === 200 && response.data.message === 'Login successful') {
+                const { adminaccessToken, adminrefreshToken } = response.data
+                const expires = new Date();
+                expires.setDate(expires.getDate() + 1);
+
+                setCookie('adminaccessToken', adminaccessToken, { expires })
+                toast.success('Login successful')
+                navigate('/feedbackdata')
+            }
+
         } catch (error) {
-            console.error(error);
-            toast.error("Somthing wrong try after sometime ")
+            if (error.response.status === 401 && error.response.data.message === "Invalid user credentials") {
+                toast.error(error.response.data.message)
+            }
+            if (error.response.status === 404 && error.response.data.message === "User does not exist") {
+                toast.error(error.response.data.message)
+            }
+            if (error.response.status === 403 && error.response.data.message === "Only admins can access this route") {
+                toast.error(error.response.data.message)
+            }
+            console.log(error.response);
         }
     };
 
     return (
         <ThemeProvider theme={defaultTheme}>
-            <Grid container alignItems={'center'} marginTop={'140px'}  justifyContent={'center'} component="main" sx={{ height: 'auto' }}>
+            <Grid container alignItems={'center'} marginTop={'140px'} justifyContent={'center'} component="main" >
                 {/* <CssBaseline /> */}
 
                 <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} >
@@ -56,7 +81,7 @@ export default function AdminLogin() {
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
-                            
+
                         }}
                     >
                         <Avatar sx={{ bgcolor: 'secondary.main' }}>

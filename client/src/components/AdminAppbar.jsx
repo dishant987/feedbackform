@@ -1,4 +1,5 @@
-import * as React from 'react';
+
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
@@ -13,6 +14,7 @@ import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import ToggleColorMode from './ToggleColorMode';
 import { Link } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 const logoStyle = {
     width: '140px',
@@ -20,15 +22,28 @@ const logoStyle = {
     cursor: 'pointer',
 };
 
-function AppAppBar({ toggleColorMode }) {
-    const [open, setOpen] = React.useState(false);
+
+
+function AdminAppbar({ mode, toggleColorMode }) {
+
+    const [open, setOpen] = useState(false);
+
+    const [cookies, setCookie, removeCookie] = useCookies(['adminaccessToken']);
+
 
     const toggleDrawer = (newOpen) => () => {
         setOpen(newOpen);
     };
 
+    const handleLogout = () => {
+        removeCookie('adminaccessToken')
+        toast.success('Logout successfull')
+    }
+
+
     const scrollToSection = (sectionId) => {
         const sectionElement = document.getElementById(sectionId);
+
         const offset = 128;
         if (sectionElement) {
             const targetScroll = sectionElement.offsetTop - offset;
@@ -112,30 +127,22 @@ function AppAppBar({ toggleColorMode }) {
                                 alignItems: 'center',
                             }}
                         >
-                            <ToggleColorMode toggleColorMode={toggleColorMode} />
-                            <Link to={'/login'}>
-                                <Button
 
-                                    color="primary"
-                                    variant="text"
-                                    size="small"
-                                    component="a"
-                                >
-                                    Sign In
-                                </Button>
-                            </Link>
-                            <Link to={"/signup"}>
-                                <Button
-                                    color="primary"
-                                    variant="contained"
-                                    size="small"
-                                    component="a"
+                            <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
+
+                            <Button
+
+                                color="primary"
+                                variant='contained'
+                                size="small"
+                                component="a"
+                                onClick={handleLogout}
+
+                            >
+                                Logout
+                            </Button>
 
 
-                                >
-                                    Sign up
-                                </Button>
-                            </Link>
                         </Box>
                         <Box sx={{ display: { sm: '', md: 'none' } }}>
                             <Button
@@ -164,7 +171,7 @@ function AppAppBar({ toggleColorMode }) {
                                             flexGrow: 1,
                                         }}
                                     >
-                                        <ToggleColorMode toggleColorMode={toggleColorMode} />
+                                        <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
                                     </Box>
                                     <MenuItem onClick={() => scrollToSection('features')}>
                                         Features
@@ -189,21 +196,10 @@ function AppAppBar({ toggleColorMode }) {
                                             target="_blank"
                                             sx={{ width: '100%' }}
                                         >
-                                            Sign up
+                                            Logout
                                         </Button>
                                     </MenuItem>
-                                    <MenuItem>
-                                        <Button
-                                            color="primary"
-                                            variant="outlined"
-                                            component="a"
-                                            href="/material-ui/getting-started/templates/sign-in/"
-                                            target="_blank"
-                                            sx={{ width: '100%' }}
-                                        >
-                                            Sign in
-                                        </Button>
-                                    </MenuItem>
+
                                 </Box>
                             </Drawer>
                         </Box>
@@ -214,9 +210,9 @@ function AppAppBar({ toggleColorMode }) {
     );
 }
 
-AppAppBar.propTypes = {
+AdminAppbar.propTypes = {
     mode: PropTypes.oneOf(['dark', 'light']).isRequired,
     toggleColorMode: PropTypes.func.isRequired,
 };
 
-export default AppAppBar;
+export default AdminAppbar;
