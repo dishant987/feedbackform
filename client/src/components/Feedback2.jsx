@@ -53,7 +53,7 @@ theme.typography.h3 = {
 
 const customIcons = {
   1: {
-    
+
     icon: <SentimentVeryDissatisfiedIcon fontSize='40px' color="error" />,
     label: 'Very Dissatisfied',
   },
@@ -101,7 +101,7 @@ const validationSchema = Yup.object().shape({
 
 const Feedback2 = () => {
   const [decodedToken, setDecodedToken] = useState(null);
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(null);
   const [loading, setLoading] = useState(false);
   const [hover, setHover] = useState(-1);
   const [showConf, setShowConf] = useState(false)
@@ -267,9 +267,11 @@ const Feedback2 = () => {
                   <Box textAlign={'center'}>
                     <Typography>Share your experience</Typography>
                     <StyledRating
+                    required
                       name="highlight-selected-only"
                       size='large'
                       defaultValue={0}
+                      onChange={(e) => setRating(e.target.value)}
                       IconContainerComponent={IconContainer}
                       getLabelText={(value) => customIcons[value].label}
                       highlightSelectedOnly

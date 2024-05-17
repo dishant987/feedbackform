@@ -51,14 +51,22 @@ export default function Login() {
             const response = await axios.post('http://localhost:3000/api/users/signin', values);
             console.log(response.data);
             if (response.data.statuscode === 200 && response.data.message === "Login SuccessFully") {
-                const { accessToken, refreshToken } = response.data
-                const expires = new Date();
-                expires.setDate(expires.getDate() + 1);
+                const { accessToken, refreshToken } = response.data;
 
-                setCookie('accessToken', accessToken, { expires })
+                // Set access token expiration to 1 day
+                const accessExpires = new Date();
+                accessExpires.setDate(accessExpires.getDate() + 1);
+
+                // Set refresh token expiration to 10 days
+                const refreshExpires = new Date();
+                refreshExpires.setDate(refreshExpires.getDate() + 10);
+
+                // Set cookies with respective expiration times
+                setCookie('accessToken', accessToken, { expires: accessExpires });
+                setCookie('refreshToken', refreshToken, { expires: refreshExpires });
                 toast.success(response.data.message)
 
-                navigate('/feedback')
+                navigate('/selectform')
             }
             if (response.data.statuscode === 401 && response.data.message === "Invalid User credentials") {
                 toast.error(response.data.message)

@@ -3,11 +3,11 @@ import { User } from "../models/user.js";
 
 export const verifyJWT = async (req, res, next) => {
   try {
-   
+    
     const token =
-      (await req.cookies?.accessToken) ||
+      req.cookies?.accessToken ||
       req.header("Authorization")?.replace("Bearer ", "");
-      
+    console.log(token);
     if (!token) {
       return res.json({
         statuscode: 401,

@@ -15,6 +15,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ToggleColorMode from './ToggleColorMode';
 import { Link } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+import toast from 'react-hot-toast';
 
 const logoStyle = {
     width: '140px',
@@ -38,6 +39,7 @@ function AdminAppbar({ mode, toggleColorMode }) {
     const handleLogout = () => {
         removeCookie('adminaccessToken')
         toast.success('Logout successfull')
+        
     }
 
 

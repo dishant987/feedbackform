@@ -154,10 +154,11 @@ export const signIn = async (req, res) => {
 
 //logout
 export async function userLogout(req, res) {
-  User.findByIdAndUpdate(
+  
+  await User.findByIdAndUpdate(
     req.user._id,
     {
-      $set: { refreshToken: undefined },
+      $set: { refreshToken: null },
     },
     { new: true }
   );

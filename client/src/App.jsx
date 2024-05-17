@@ -76,7 +76,7 @@ function App() {
     },
     {
       path: "/logout",
-      element: <AdminProtectedRoute component={Logout} />,
+      element: <ProtectedRoute component={Logout} />,
     },
   ]);
   return (
