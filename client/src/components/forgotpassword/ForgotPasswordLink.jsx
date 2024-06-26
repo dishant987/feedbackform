@@ -59,8 +59,8 @@ export default function ForgotPasswordLink() {
             const response = await axios.post('http://localhost:3000/api/rese', values);
             console.log(response);
 
-            if (response.status == 200 && response.data.message == "Email is already verifyed") {
-                toast.success(response.data.message, { id: toastId })
+            if (response.status == 200 && response.data.message == "Email is not verify") {
+                toast.error(response.data.message, { id: toastId })
 
             }
 

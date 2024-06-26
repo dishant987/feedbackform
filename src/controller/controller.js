@@ -515,14 +515,14 @@ export async function resentforgotPasswordEmail(req, res) {
       return res.status(404).json({ error: "Email not Found" });
     }
   
-    if (user.isVerfied === true) {
+    if (user.isVerfied === false) {
       return res.status(200).json({
-        message: "Email is already verifyed",
+        message: "Email is not verify",
         success: true,
       });
     }
 
-    await sendEmail({ email, emailType: "Resent Email", userId: user._id });
+    await sendEmail({ email, emailType: "RESET", userId: user._id });
 
     return res.status(200).json({
       message: "Email Sent successfully and verify for login",

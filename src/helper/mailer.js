@@ -14,7 +14,7 @@ export const sendEmail = async ({ email, emailType, userId }) => {
     } else if (emailType === "RESET") {
       await User.findByIdAndUpdate(userId, {
         forgotPasswordToken: hashedToken,
-        forgotPasswordTokenExpiry: Date.now() + 3600000,
+        forgotPasswordTokenExpiry: Date.now() + 600000 // 10 minutes in milliseconds
       });
     } else if (emailType === "Resent Email") {
       await User.findByIdAndUpdate(userId, {
@@ -26,12 +26,11 @@ export const sendEmail = async ({ email, emailType, userId }) => {
     let transport = nodemailer.createTransport({
       service: "gmail",
       host: "smtp.gmail.com",
-      port: 465,
+      port: process.env.MAIL_PORT,
       secure: true,
       auth: {
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_PASS,
-      
       },
     });
 
