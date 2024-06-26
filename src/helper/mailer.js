@@ -35,7 +35,7 @@ export const sendEmail = async ({ email, emailType, userId }) => {
     });
 
     const mailOptions = {
-      from: "tankdishant2003@gmail.com",
+      from: process.env.MAIL_USER,
       to: email,
       subject:
         emailType === "VERIFY" || "Resent Email"
