@@ -29,9 +29,9 @@ export const sendEmail = async ({ email, emailType, userId }) => {
       port: 465,
       secure: true,
       auth: {
-        user: "tankdishant2003@gmail.com",
-        pass: "wpvaawzxegnjlydu",
-        //TODO: add these credentials to .env file
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS,
+      
       },
     });
 
