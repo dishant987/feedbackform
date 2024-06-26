@@ -12,5 +12,8 @@ router.route("/feedbackdata").get(controller.feedbackData);
 router.route("/deletefeedback/:id").delete(controller.adminfeedbackdelete);
 router.route("/getfeedbackdata/:id").get(controller.getSingleFeedbackData);
 router.route("/editfeedbackdata").put(controller.editFeedbackData);
+// router.route('/sendmail').post(controller.sendMailFun);
+router.route('/verifymail').post(controller.verifyEmail)
+router.route('/resentmail').post(controller.resentEmail)
 
 export default router;

@@ -17,6 +17,9 @@ import AdminViewFeedback from "./components/AdminViewFeedback";
 import Logout from "./components/Logout";
 import SelectForm from "./components/SelectForm";
 import Feedback2 from "./components/Feedback2";
+import ResentEmail from "./components/ResentEmail";
+import VerifyEmail from "./components/VerifyMail";
+import ForgotPasswordLink from "./components/forgotpassword/ForgotPasswordLink";
 
 
 function App() {
@@ -77,6 +80,21 @@ function App() {
     {
       path: "/logout",
       element: <ProtectedRoute component={Logout} />,
+    },
+    {
+      path: "/resentemailverify",
+      // element: <ProtectedRoute component={ResentEmail} />,
+      element: <ResentEmail />,
+    },
+    {
+      path: "/verifyemail",
+      // element: <ProtectedRoute component={ResentEmail} />,
+      element: <VerifyEmail />,
+    },
+    {
+      path: "/forgotpasswordlink",
+      // element: <ProtectedRoute component={ResentEmail} />,
+      element: <ForgotPasswordLink/>,
     },
   ]);
   return (

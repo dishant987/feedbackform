@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import { Feedback } from "../models/feedback.js";
 import { User } from "../models/user.js";
 import jwt from "jsonwebtoken";
+import twilio from "twilio";
+import { sendEmail } from "../helper/mailer.js";
 
 const generateAccessTokenAndRefereshToken = async function (userId, res) {
   try {
@@ -71,10 +73,12 @@ export const signUp = async (req, res) => {
         message: "Something went wrong while registering the user",
       });
     }
+    console.log(user);
+    await sendEmail({ email, emailType: "VERIFY", userId: user._id });
 
     res.status(201).json({
       statuscode: 200,
-      message: "User Registered Successfully",
+      message: "Email sent Successfully and Verify your mail for login",
     });
   } catch (error) {
     console.log(error);
@@ -110,6 +114,12 @@ export const signIn = async (req, res) => {
       return res.json({
         statuscode: 404,
         message: "User does not exist",
+      });
+    }
+    if (user.isVerfied === false) {
+      return res.json({
+        statuscode: 404,
+        message: "Email is Not Verify",
       });
     }
 
@@ -154,7 +164,6 @@ export const signIn = async (req, res) => {
 
 //logout
 export async function userLogout(req, res) {
-  
   await User.findByIdAndUpdate(
     req.user._id,
     {
@@ -423,3 +432,103 @@ export async function editFeedbackData(req, res) {
     });
   }
 }
+
+//mail
+
+// export async function sendMailFun(req, res) {
+//   const { email, emailtype } = req.body;
+//   let respo = await sendEmail(email, emailtype);
+//   console.log(respo);
+//   res.status(200).json({
+//     message: "email sent",
+//     data:respo
+//   });
+// }
+
+export async function verifyEmail(req, res) {
+  try {
+    const { token } = req.body;
+
+    const user = await User.findOne({
+      verifyToken: token,
+      verifyTokenExpiry: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({ error: "Invalid token" , status: 400 });
+    }
+    console.log(user);
+    user.isVerfied = true;
+    user.verifyToken = undefined;
+    user.verifyTokenExpiry = undefined;
+    await user.save();
+
+    return res.status(200).json({
+      message: "Email verified successfully",
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message ,status: 500 });
+  }
+}
+
+export async function resentEmail(req, res) {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({
+      email
+    });
+    if (!user) {
+      return res.status(404).json({ error: "Email not Found" });
+    }
+  
+    if (user.isVerfied === true) {
+      return res.status(200).json({
+        message: "Email is already verifyed",
+        success: true,
+      });
+    }
+
+    await sendEmail({ email, emailType: "Resent Email", userId: user._id });
+
+    return res.status(200).json({
+      message: "Email Sent successfully and verify for login",
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message , status: 500 });
+  }
+}     
+
+
+
+
+export async function resentforgotPasswordEmail(req, res) {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({
+      email
+    });
+    if (!user) {
+      return res.status(404).json({ error: "Email not Found" });
+    }
+  
+    if (user.isVerfied === true) {
+      return res.status(200).json({
+        message: "Email is already verifyed",
+        success: true,
+      });
+    }
+
+    await sendEmail({ email, emailType: "Resent Email", userId: user._id });
+
+    return res.status(200).json({
+      message: "Email Sent successfully and verify for login",
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message , status: 500 });
+  }
+}                           

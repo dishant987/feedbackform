@@ -29,6 +29,14 @@ const userSchema = new Schema(
       type: String,
       default: "user",
     },
+    isVerfied: {
+      type: Boolean,
+      default: false,
+    },
+    verifyToken: String,
+    verifyTokenExpiry: Date,
+    forgotPasswordToken: String,
+    forgotPasswordTokenExpiry: Date,
   },
   {
     timestamps: true,

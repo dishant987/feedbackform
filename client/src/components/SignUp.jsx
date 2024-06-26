@@ -31,7 +31,7 @@ const ErrorMessage = ({ children }) => (
   </Typography>
 );
 
-export default function SignUp() {
+export default function ResentEmail() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false); // Add loading state
@@ -62,20 +62,22 @@ export default function SignUp() {
   });
 
   const handleSubmit = async (values) => {
+    const toastId = toast.loading("loading...");
     setLoading(true); // Start loading
     try {
       const response = await axios.post('http://localhost:3000/api/users/signup', values);
       console.log(response.data);
       if (response.data.statuscode == 409 && response.data.message == "User with email or username already exists") {
-        toast.error(response.data.message)
+        toast.error(response.data.message, { id: toastId })
 
       }
-      if (response.data.statuscode == 200 && response.data.message == "User Registered Successfully") {
-        toast.success(response.data.message)
+      if (response.data.statuscode == 200 && response.data.message == "Email sent Successfully and Verify your mail for login") {
+        toast.success(response.data.message, { id: toastId })
         navigate('/login')
       }
     } catch (error) {
       console.error(error);
+      
       toast.error("Something wrong, try again later ")
     } finally {
       setLoading(false); // Stop loading

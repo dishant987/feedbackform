@@ -20,8 +20,16 @@ import { IconButton, InputAdornment } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useCookies } from 'react-cookie';
+import ErrorIcon from '@mui/icons-material/Error';
 
 const defaultTheme = createTheme();
+
+const ErrorMessage = ({ children }) => (
+    <Typography variant="caption" color="error">
+      <ErrorIcon style={{ marginRight: "5px", fontSize: '15px' }} />
+      {children}
+    </Typography>
+  );
 
 export default function Login() {
 
@@ -46,6 +54,7 @@ export default function Login() {
     });
 
     const handleSubmit = async (values) => {
+        const toastId = toast.loading("Logging In...");
         setLoading(true); // Start loading
         try {
             const response = await axios.post('http://localhost:3000/api/users/signin', values);
@@ -64,15 +73,18 @@ export default function Login() {
                 // Set cookies with respective expiration times
                 setCookie('accessToken', accessToken, { expires: accessExpires });
                 setCookie('refreshToken', refreshToken, { expires: refreshExpires });
-                toast.success(response.data.message)
+                toast.success(response.data.message, { id: toastId })
 
                 navigate('/selectform')
             }
             if (response.data.statuscode === 401 && response.data.message === "Invalid User credentials") {
-                toast.error(response.data.message)
+                toast.error(response.data.message, { id: toastId })
             }
             if (response.data.statuscode === 404 && response.data.message === "User does not exist") {
-                toast.error(response.data.message)
+                toast.error(response.data.message, { id: toastId })
+            }
+            if (response.data.statuscode === 404 && response.data.message === "Email is Not Verify") {
+                toast.error(response.data.message, { id: toastId })
             }
         } catch (error) {
             console.error(error);
@@ -136,7 +148,7 @@ export default function Login() {
                                         autoComplete="email"
                                         autoFocus
                                         error={errors.email && touched.email}
-                                        helperText={errors.email && touched.email ? errors.email : null}
+                                        helperText={errors.email && touched.email ? <ErrorMessage children={errors.email} /> : null}
                                     />
                                     <Field
                                         margin="normal"
@@ -144,11 +156,14 @@ export default function Login() {
                                         fullWidth
                                         name="password"
                                         label="Password"
+                                        
                                         type={showPassword ? 'text' : 'password'}
                                         id="password"
                                         autoComplete="current-password"
+                                        
                                         error={errors.password && touched.password}
-                                        helperText={errors.password && touched.password ? errors.password : null}
+                                        helperText={errors.password && touched.password ? <ErrorMessage children={errors.password} /> : null}
+
                                         InputProps={{
                                             endAdornment: (
                                                 <InputAdornment position="end">
@@ -163,10 +178,13 @@ export default function Login() {
                                             ),
                                         }}
                                     />
-                                    <FormControlLabel
-                                        control={<Checkbox value="remember" color="primary" />}
-                                        label="Remember me"
-                                    />
+
+
+                                    <Grid xs>
+                                        <Link variant="body2" to={"/forgotpasswordlink"}>
+                                            Forgot password?
+                                        </Link>
+                                    </Grid>
 
 
                                     {loading ? (
@@ -187,8 +205,8 @@ export default function Login() {
 
                                     <Grid container>
                                         <Grid item xs>
-                                            <Link variant="body2">
-                                                Forgot password?
+                                            <Link variant="body2" to={"/resentemailverify"}>
+                                                Resent Email verify?
                                             </Link>
                                         </Grid>
                                         <Grid item>
