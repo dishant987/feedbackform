@@ -91,16 +91,14 @@ export default function ForgotPassword() {
                 }
             );
 
-            console.log(response);
+            // console.log(response);
 
             if (response.status === 200 && response.data.message === "Password updated successfully") {
                 toast.success(response.data.message, { id: toastId });
-            }
-
-            if (response.status === 200 && response.data.message === "Email Sent successfully and verify for login") {
-                toast.success(response.data.message, { id: toastId });
                 navigate('/login');
             }
+
+        
         } catch (error) {
             console.error(error);
             if (error.response.status === 400 && error.response.data.error === "Token has expired or is invalid") {

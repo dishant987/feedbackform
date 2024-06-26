@@ -40,7 +40,6 @@ function App() {
     {
       path: "/",
       element: <Home />,
-      props: { toggleColorMode },
     },
     {
       path: "/login",

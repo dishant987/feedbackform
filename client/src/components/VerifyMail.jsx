@@ -2,12 +2,13 @@ import { Button, Container, Typography, Box } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function VerifyEmail() {
     const [token, setToken] = useState("");
     const [verified, setVerified] = useState(false);
     const [error, setError] = useState(false);
+    const navigate = useNavigate()
 
     const verifyUserEmail = async () => {
         let toastId = toast.loading('loading...');
@@ -33,6 +34,9 @@ export default function VerifyEmail() {
 
     useEffect(() => {
         const urlToken = window.location.search.split("=")[1];
+        if (!urlToken) {
+            navigate('/login');
+        }
         setToken(urlToken || "");
     }, []);
 

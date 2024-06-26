@@ -529,7 +529,7 @@ export async function resentforgotPasswordEmail(req, res) {
 export async function verifyForgotPassword(req, res) {
   try {
     const { token, conformPassword } = req.body;
-
+    
     const user = await User.findOne({
       forgotPasswordToken: token,
       forgotPasswordTokenExpiry: { $gt: Date.now() },

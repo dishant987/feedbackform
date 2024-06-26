@@ -26,10 +26,10 @@ const defaultTheme = createTheme();
 
 const ErrorMessage = ({ children }) => (
     <Typography variant="caption" color="error">
-      <ErrorIcon style={{ marginRight: "5px", fontSize: '15px' }} />
-      {children}
+        <ErrorIcon style={{ marginRight: "5px", fontSize: '15px' }} />
+        {children}
     </Typography>
-  );
+);
 
 export default function Login() {
 
@@ -156,11 +156,11 @@ export default function Login() {
                                         fullWidth
                                         name="password"
                                         label="Password"
-                                        
+
                                         type={showPassword ? 'text' : 'password'}
                                         id="password"
                                         autoComplete="current-password"
-                                        
+
                                         error={errors.password && touched.password}
                                         helperText={errors.password && touched.password ? <ErrorMessage children={errors.password} /> : null}
 
