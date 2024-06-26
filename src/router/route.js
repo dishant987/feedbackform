@@ -15,5 +15,7 @@ router.route("/editfeedbackdata").put(controller.editFeedbackData);
 // router.route('/sendmail').post(controller.sendMailFun);
 router.route('/verifymail').post(controller.verifyEmail)
 router.route('/resentmail').post(controller.resentEmail)
+router.route('/forgotpasswordmaill').post(controller.resentforgotPasswordEmail)
+router.route('/verifyforgotpassword').post(controller.verifyForgotPassword)
 
 export default router;

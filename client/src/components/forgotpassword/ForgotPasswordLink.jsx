@@ -33,7 +33,7 @@ const ErrorMessage = ({ children }) => (
 
 export default function ForgotPasswordLink() {
 
-
+   
     const [loading, setLoading] = useState(false); // Add loading state
     const navigate = useNavigate()
     const [cookies] = useCookies(['accessToken']);
@@ -56,7 +56,7 @@ export default function ForgotPasswordLink() {
         let toastId = toast.loading('loading...')
         setLoading(true); // Start loading
         try {
-            const response = await axios.post('http://localhost:3000/api/rese', values);
+            const response = await axios.post('http://localhost:3000/api/forgotpasswordmaill', values);
             console.log(response);
 
             if (response.status == 200 && response.data.message == "Email is not verify") {
@@ -64,7 +64,7 @@ export default function ForgotPasswordLink() {
 
             }
 
-            if (response.status == 200 && response.data.message == "Email Sent successfully and verify for login") {
+            if (response.status == 200 && response.data.message == "Email Sent successfully for forgot password") {
                 toast.success(response.data.message, { id: toastId })
                 navigate('/login')
             }

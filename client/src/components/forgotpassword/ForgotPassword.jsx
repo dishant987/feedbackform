@@ -5,7 +5,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import { Link, useNavigate } from 'react-router-dom';
 import { Field, Form, Formik } from 'formik';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
@@ -42,18 +41,18 @@ const forgotSchema = Yup.object().shape({
         .required('Confirm Password is required'),
 });
 
-
 export default function ForgotPassword() {
-
     const [showPassword, setShowPassword] = useState(false);
     const [showPassword1, setShowPassword1] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [token, setToken] = useState("");
     const navigate = useNavigate();
     const [cookies] = useCookies(['accessToken']);
 
     const handleTogglePasswordVisibility = () => {
         setShowPassword((prev) => !prev);
     };
+
     const handleTogglePasswordVisibility1 = () => {
         setShowPassword1((prev) => !prev);
     };
@@ -64,15 +63,37 @@ export default function ForgotPassword() {
         }
     }, [cookies.accessToken]);
 
+    useEffect(() => {
+        const urlToken = window.location.search.split("=")[1];
+        if (!urlToken) {
+            navigate('/login');
+        }
+
+        setToken(urlToken || "");
+    }, []);
+
+    // useEffect(() => {
+    //     if (token.length > 0) {
+    //         verifyUserEmail();
+    //     }
+    // }, [token]);
+
     const handleSubmit = async (values) => {
         let toastId = toast.loading('loading...');
         setLoading(true);
         console.log(values);
+
         try {
-            const response = await axios.post('http://localhost:3000/api/resen', values);
+            const response = await axios.post('http://localhost:3000/api/verifyforgotpassword',
+                {
+                    token: token,
+                    conformPassword: values.conformPassword
+                }
+            );
+
             console.log(response);
 
-            if (response.status === 200 && response.data.message === "Email is already verified") {
+            if (response.status === 200 && response.data.message === "Password updated successfully") {
                 toast.success(response.data.message, { id: toastId });
             }
 
@@ -82,15 +103,21 @@ export default function ForgotPassword() {
             }
         } catch (error) {
             console.error(error);
-            if (error.response.status === 404 && error.response.data.error === "Email not Found") {
+            if (error.response.status === 400 && error.response.data.error === "Token has expired or is invalid") {
                 return toast.error(error.response.data.error, { id: toastId });
             }
-            toast.error("Something wrong, try again later");
+            toast.error("Something went wrong, please try again later");
         } finally {
             setLoading(false);
             toastId = null;
         }
     };
+
+    // const formatTime = (seconds) => {
+    //     const minutes = Math.floor(seconds / 60);
+    //     const secs = seconds % 60;
+    //     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+    // };
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -116,6 +143,9 @@ export default function ForgotPassword() {
                         <Typography sx={{ paddingY: '10px' }} component="h1" variant="h5">
                             Forgot Password
                         </Typography>
+                        {/* <Typography sx={{ paddingY: '10px' }} component="h2" variant="h6">
+                            Link expires in: {formatTime(timeLeft)}
+                        </Typography> */}
                         <Formik
                             initialValues={{
                                 newPassword: '',

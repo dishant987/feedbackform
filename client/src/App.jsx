@@ -20,6 +20,7 @@ import Feedback2 from "./components/Feedback2";
 import ResentEmail from "./components/ResentEmail";
 import VerifyEmail from "./components/VerifyMail";
 import ForgotPasswordLink from "./components/forgotpassword/ForgotPasswordLink";
+import ForgotPassword from "./components/forgotpassword/ForgotPassword";
 
 
 function App() {
@@ -95,6 +96,11 @@ function App() {
       path: "/forgotpasswordlink",
       // element: <ProtectedRoute component={ResentEmail} />,
       element: <ForgotPasswordLink/>,
+    },
+    {
+      path: "/forgotpassword",
+      // element: <ProtectedRoute component={ResentEmail} />,
+      element: <ForgotPassword/>,
     },
   ]);
   return (

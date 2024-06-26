@@ -433,17 +433,7 @@ export async function editFeedbackData(req, res) {
   }
 }
 
-//mail
 
-// export async function sendMailFun(req, res) {
-//   const { email, emailtype } = req.body;
-//   let respo = await sendEmail(email, emailtype);
-//   console.log(respo);
-//   res.status(200).json({
-//     message: "email sent",
-//     data:respo
-//   });
-// }
 
 export async function verifyEmail(req, res) {
   try {
@@ -453,13 +443,15 @@ export async function verifyEmail(req, res) {
       verifyToken: token,
       verifyTokenExpiry: { $gt: Date.now() },
     });
-   
-    if(user===null){
-      return res.status(200).json({ message: "Email is already verifyed" , status: 200 });
+
+    if (user === null) {
+      return res
+        .status(200)
+        .json({ message: "Email is already verifyed", status: 200 });
     }
 
     if (!user) {
-      return res.status(400).json({ error: "Invalid token" , status: 400 });
+      return res.status(400).json({ error: "Invalid token", status: 400 });
     }
     console.log(user);
     user.isVerfied = true;
@@ -472,7 +464,7 @@ export async function verifyEmail(req, res) {
       success: true,
     });
   } catch (error) {
-    return res.status(500).json({ error: error.message ,status: 500 });
+    return res.status(500).json({ error: error.message, status: 500 });
   }
 }
 
@@ -481,12 +473,12 @@ export async function resentEmail(req, res) {
     const { email } = req.body;
 
     const user = await User.findOne({
-      email
+      email,
     });
     if (!user) {
       return res.status(404).json({ error: "Email not Found" });
     }
-  
+
     if (user.isVerfied === true) {
       return res.status(200).json({
         message: "Email is already verifyed",
@@ -501,24 +493,21 @@ export async function resentEmail(req, res) {
       success: true,
     });
   } catch (error) {
-    return res.status(500).json({ error: error.message , status: 500 });
+    return res.status(500).json({ error: error.message, status: 500 });
   }
-}     
-
-
-
+}
 
 export async function resentforgotPasswordEmail(req, res) {
   try {
     const { email } = req.body;
 
     const user = await User.findOne({
-      email
+      email,
     });
     if (!user) {
       return res.status(404).json({ error: "Email not Found" });
     }
-  
+
     if (user.isVerfied === false) {
       return res.status(200).json({
         message: "Email is not verify",
@@ -529,10 +518,38 @@ export async function resentforgotPasswordEmail(req, res) {
     await sendEmail({ email, emailType: "RESET", userId: user._id });
 
     return res.status(200).json({
-      message: "Email Sent successfully and verify for login",
+      message: "Email Sent successfully for forgot password",
       success: true,
     });
   } catch (error) {
-    return res.status(500).json({ error: error.message , status: 500 });
+    return res.status(500).json({ error: error.message, status: 500 });
   }
-}                           
+}
+
+export async function verifyForgotPassword(req, res) {
+  try {
+    const { token, conformPassword } = req.body;
+
+    const user = await User.findOne({
+      forgotPasswordToken: token,
+      forgotPasswordTokenExpiry: { $gt: Date.now() },
+    });
+    // console.log(user);
+    if (!user) {
+      return res
+        .status(400)
+        .json({ error: "Token has expired or is invalid", status: 400 });
+    }
+
+    (user.password = conformPassword), (user.forgotPasswordToken = undefined);
+    user.forgotPasswordTokenExpiry = undefined;
+    await user.save();
+
+    return res.status(200).json({
+      message: "Password updated successfully",
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message, status: 500 });
+  }
+}
