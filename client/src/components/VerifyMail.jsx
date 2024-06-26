@@ -1,5 +1,4 @@
-
-import LoadingButton from "@mui/lab/LoadingButton";
+import { Button } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -18,6 +17,10 @@ export default function VerifyEmail() {
             const res = await axios.post('http://localhost:3000/api/verifymail', { token: token })
             setVerified(true);
             if (res.status == 200 && res.data.message == "Email verified successfully") {
+                toast.success(res.data.message, { id: toastId })
+
+            }
+            if (res.status == 200 && res.data.message == "Email is already verifyed") {
                 toast.success(res.data.message, { id: toastId })
 
             }
@@ -58,15 +61,16 @@ export default function VerifyEmail() {
                     <h2 className="text-2xl">Email Verified</h2>
 
                     <Link to="/login">
-                        <LoadingButton
+                        <Button
                             type='submit'
                             fullWidth sx={{ mt: 3, mb: 2 }}
-                            loading={loading}
+                          
                             loadingPosition="end"
                             variant="contained"
                         >
                             Login
-                        </LoadingButton>
+                            
+                        </Button>
                     </Link>
                 </div>
             )}

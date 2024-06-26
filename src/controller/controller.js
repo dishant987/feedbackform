@@ -453,6 +453,10 @@ export async function verifyEmail(req, res) {
       verifyToken: token,
       verifyTokenExpiry: { $gt: Date.now() },
     });
+   
+    if(user===null){
+      return res.status(200).json({ message: "Email is already verifyed" , status: 200 });
+    }
 
     if (!user) {
       return res.status(400).json({ error: "Invalid token" , status: 400 });
