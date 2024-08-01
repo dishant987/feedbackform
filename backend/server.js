@@ -4,14 +4,15 @@ import cors from "cors";
 import connect from "./src/database/conn.js";
 import router from "./src/router/route.js";
 import cookieParser from "cookie-parser";
+import cron from "node-cron"; // Import the node-cron package
 
 config();
 
 const app = express();
 
 const corsOptions = {
-  origin: "https://feedbackform-fronted-fetgoq751-dishant987s-projects.vercel.app", // Ensure this matches exactly
-  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+  origin: "https://feedbackform-fronted-fetgoq751-dishant987s-projects.vercel.app",
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
@@ -43,3 +44,9 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Internal Server Error");
 });
+
+// Set up a cron job
+cron.schedule('* * * * *', () => {
+  console.log('Cron job running every minute');
+});
+
