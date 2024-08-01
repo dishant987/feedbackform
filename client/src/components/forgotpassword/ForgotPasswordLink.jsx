@@ -89,7 +89,7 @@ export default function ForgotPasswordLink() {
                 <Paper sx={{ padding: '25px', marginTop: '200px' }}>
                     <Link to={'/login'}>
                         <Button variant='outlined' startIcon={<ArrowBack />}>
-
+                            back
                         </Button>
                     </Link>
                     <Box
