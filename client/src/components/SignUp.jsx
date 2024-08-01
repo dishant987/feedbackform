@@ -75,9 +75,10 @@ export default function ResentEmail() {
     } catch (error) {
       console.error(error);
 
-      toast.error("Something wrong, try again later ")
+      toast.error("Something wrong, try again later ",{ id: toastId })
     } finally {
       setLoading(false); // Stop loading
+      toast.dismiss(toastId)
     }
   };
 
