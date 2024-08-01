@@ -10,11 +10,11 @@ config();
 const app = express();
 
 const corsOptions = {
-  origin: 'https://feedbackform-fronted.vercel.app', // Ensure this matches exactly
-  
+  origin: "https://feedbackform-fronted.vercel.app", // Ensure this matches exactly
+  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
 };
 
-app.use(cors(corsOptions)); // Apply CORS middleware first
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -34,8 +34,8 @@ connect()
 
 app.use("/api", router);
 
-app.get("/test", (req, res) => {
-  res.json("Get Request testing");
+app.get("/", (req, res) => {
+  res.json("Testing");
 });
 
 // Ensure this is placed after all other middleware and routes to catch errors
