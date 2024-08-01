@@ -14,8 +14,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import * as Yup from 'yup';
-import { IconButton, InputAdornment, Paper } from '@mui/material';
-import { ArrowBack, ErrorOutlineOutlined, ErrorOutlineTwoTone, Visibility, VisibilityOff } from '@mui/icons-material';
+import { Paper } from '@mui/material';
+import { ArrowBack } from '@mui/icons-material';
 import ErrorIcon from '@mui/icons-material/Error';
 import axios from 'axios';
 import toast from 'react-hot-toast';
@@ -33,7 +33,7 @@ const ErrorMessage = ({ children }) => (
 
 export default function ForgotPasswordLink() {
 
-   
+
     const [loading, setLoading] = useState(false); // Add loading state
     const navigate = useNavigate()
     const [cookies] = useCookies(['accessToken']);
@@ -56,7 +56,7 @@ export default function ForgotPasswordLink() {
         let toastId = toast.loading('loading...')
         setLoading(true); // Start loading
         try {
-            const response = await axios.post('http://localhost:3000/api/forgotpasswordmaill', values);
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/forgotpasswordmaill`, values);
             console.log(response);
 
             if (response.status == 200 && response.data.message == "Email is not verify") {
