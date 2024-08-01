@@ -40,7 +40,7 @@ export default function ResentEmail() {
     if (cookies.accessToken) {
       navigate('/feedback'); // Redirect to feedback if user is already logged in
     }
-  }, [cookies.accessToken]);
+  }, [cookies]);
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
