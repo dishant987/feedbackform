@@ -7,11 +7,18 @@ import router from "./src/router/route.js";
 import cookieParser from "cookie-parser";
 
 const app = express();
-app.use(cors({ origin: "https://feedbackform-34pnd1lmx-dishant987s-projects.vercel.app" }));
+const corsOptions = {
+  origin: 'https://feedbackform-fronted.vercel.app',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
 const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser())
+app.use(cookieParser());
 // app.use(express.static("public"))
 
 config();
@@ -24,11 +31,9 @@ connect()
   })
   .catch((error) => {
     console.error("Error connecting to the database:", error);
-   
+
     process.exit(1);
   });
-
-  
 
 app.use("/api", router);
 
