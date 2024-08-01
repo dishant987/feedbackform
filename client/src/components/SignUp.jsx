@@ -86,120 +86,122 @@ export default function ResentEmail() {
 
   return (
 
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <Formik
-          initialValues={{
-            username: '',
-            email: '',
-            password: ''
+    <>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
           }}
-          validationSchema={SignupSchema}
-          onSubmit={handleSubmit}
-        > {({ errors, touched, isValid }) => (
-          <Form>
-            <Box sx={{ mt: 2 }}>
-              <Grid container spacing={2}>
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>
+          <Formik
+            initialValues={{
+              username: '',
+              email: '',
+              password: ''
+            }}
+            validationSchema={SignupSchema}
+            onSubmit={handleSubmit}
+          > {({ errors, touched, isValid }) => (
+            <Form>
+              <Box sx={{ mt: 2 }}>
+                <Grid container spacing={2}>
 
-                <Grid item xs={12}>
-                  <Field
-                    as={TextField}
-                    autoFocus
-                    fullWidth
-                    error={errors.username && touched.username}
-                    helperText={errors.username && touched.username ? <ErrorMessage children={errors.username} /> : null}
-                    id="username"
-                    label="User Name"
-                    name="username"
-                    autoComplete="family-name"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Field
-                    as={TextField}
+                  <Grid item xs={12}>
+                    <Field
+                      as={TextField}
+                      autoFocus
+                      fullWidth
+                      error={errors.username && touched.username}
+                      helperText={errors.username && touched.username ? <ErrorMessage children={errors.username} /> : null}
+                      id="username"
+                      label="User Name"
+                      name="username"
+                      autoComplete="family-name"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Field
+                      as={TextField}
 
-                    fullWidth
-                    error={errors.email && touched.email}
-                    helperText={errors.email && touched.email ? <ErrorMessage children={errors.email} /> : null}
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="email"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Field
-                    as={TextField}
+                      fullWidth
+                      error={errors.email && touched.email}
+                      helperText={errors.email && touched.email ? <ErrorMessage children={errors.email} /> : null}
+                      id="email"
+                      label="Email Address"
+                      name="email"
+                      autoComplete="email"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Field
+                      as={TextField}
 
-                    fullWidth
-                    error={errors.password && touched.password}
-                    helperText={errors.password && touched.password ? <ErrorMessage children={errors.password} /> : null}
-                    name="password"
-                    label="Password"
-                    type={showPassword ? 'text' : 'password'}
-                    id="password"
-                    autoComplete="new-password"
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleTogglePasswordVisibility}
-                            edge="end"
-                          >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Grid>
-                {/* <Grid item xs={12}>
+                      fullWidth
+                      error={errors.password && touched.password}
+                      helperText={errors.password && touched.password ? <ErrorMessage children={errors.password} /> : null}
+                      name="password"
+                      label="Password"
+                      type={showPassword ? 'text' : 'password'}
+                      id="password"
+                      autoComplete="new-password"
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleTogglePasswordVisibility}
+                              edge="end"
+                            >
+                              {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </Grid>
+                  {/* <Grid item xs={12}>
                     <FormControlLabel
                       control={<Checkbox value="allowExtraEmails" color="primary" />}
                       label="I want to receive inspiration, marketing promotions and updates via email."
                     />
                   </Grid> */}
-              </Grid>
-
-              <LoadingButton
-                type='submit'
-                fullWidth sx={{ mt: 3, mb: 2 }}
-                loading={loading}
-                loadingPosition="end"
-                variant="contained"
-              >
-                Submit
-              </LoadingButton>
-
-              <Grid container justifyContent="flex-end">
-                <Grid>
-                  <Link to={"/login"} variant="body2">
-                    Already have an account? Sign in
-                  </Link>
                 </Grid>
-              </Grid>
-            </Box>
-          </Form>
-        )}
-        </Formik>
-      </Box>
 
-    </Container>
+                <LoadingButton
+                  type='submit'
+                  fullWidth sx={{ mt: 3, mb: 2 }}
+                  loading={loading}
+                  loadingPosition="end"
+                  variant="contained"
+                >
+                  Submit
+                </LoadingButton>
+
+                <Grid container justifyContent="flex-end">
+                  <Grid>
+                    <Link to={"/login"} variant="body2">
+                      Already have an account? Sign in
+                    </Link>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Form>
+          )}
+          </Formik>
+        </Box>
+
+      </Container>
+    </>
 
   );
 }
