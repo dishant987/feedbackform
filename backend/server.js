@@ -7,7 +7,7 @@ import router from "./src/router/route.js";
 import cookieParser from "cookie-parser";
 
 const app = express();
-app.use(cors());
+app.use(cors({ origin: "https://feedbackform-34pnd1lmx-dishant987s-projects.vercel.app" }));
 const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
