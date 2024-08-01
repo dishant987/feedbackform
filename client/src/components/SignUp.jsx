@@ -64,7 +64,7 @@ export default function ResentEmail() {
     setLoading(true); // Start loading
     try {
       const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/signup`, values);
-     
+
       if (response.data.statuscode == 409 && response.data.message == "User with email or username already exists") {
         toast.error(response.data.message, { id: toastId })
 
@@ -109,93 +109,85 @@ export default function ResentEmail() {
             }}
             validationSchema={SignupSchema}
             onSubmit={handleSubmit}
-          > {({ errors, touched, isValid }) => (
-            <Form>
-              <Box sx={{ mt: 2 }}>
-                <Grid container spacing={2}>
-
-                  <Grid item xs={12}>
-                    <Field
-                      as={TextField}
-                      autoFocus
-                      fullWidth
-                      error={errors.username && touched.username}
-                      helperText={errors.username && touched.username ? <ErrorMessage children={errors.username} /> : null}
-                      id="username"
-                      label="User Name"
-                      name="username"
-                      autoComplete="family-name"
-                    />
+          >
+            {({ errors, touched }) => (
+              <Form>
+                <Box sx={{ mt: 2 }}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <Field
+                        as={TextField}
+                        autoFocus
+                        fullWidth
+                        error={Boolean(errors.username && touched.username)}
+                        helperText={errors.username && touched.username ? <ErrorMessage>{errors.username}</ErrorMessage> : null}
+                        id="username"
+                        label="User Name"
+                        name="username"
+                        autoComplete="family-name"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Field
+                        as={TextField}
+                        fullWidth
+                        error={Boolean(errors.email && touched.email)}
+                        helperText={errors.email && touched.email ? <ErrorMessage>{errors.email}</ErrorMessage> : null}
+                        id="email"
+                        label="Email Address"
+                        name="email"
+                        autoComplete="email"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Field
+                        as={TextField}
+                        fullWidth
+                        error={Boolean(errors.password && touched.password)}
+                        helperText={errors.password && touched.password ? <ErrorMessage>{errors.password}</ErrorMessage> : null}
+                        name="password"
+                        label="Password"
+                        type={showPassword ? 'text' : 'password'}
+                        id="password"
+                        autoComplete="new-password"
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleTogglePasswordVisibility}
+                                edge="end"
+                              >
+                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12}>
-                    <Field
-                      as={TextField}
 
-                      fullWidth
-                      error={errors.email && touched.email}
-                      helperText={errors.email && touched.email ? <ErrorMessage children={errors.email} /> : null}
-                      id="email"
-                      label="Email Address"
-                      name="email"
-                      autoComplete="email"
-                    />
+                  <LoadingButton
+                    type='submit'
+                    fullWidth sx={{ mt: 3, mb: 2 }}
+                    loading={loading}
+                    variant="contained"
+                  >
+                    Submit
+                  </LoadingButton>
+
+                  <Grid container justifyContent="flex-end">
+                    <Grid>
+                      <Link to={"/login"} variant="body2">
+                        Already have an account? Sign in
+                      </Link>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12}>
-                    <Field
-                      as={TextField}
-
-                      fullWidth
-                      error={errors.password && touched.password}
-                      helperText={errors.password && touched.password ? <ErrorMessage children={errors.password} /> : null}
-                      name="password"
-                      label="Password"
-                      type={showPassword ? 'text' : 'password'}
-                      id="password"
-                      autoComplete="new-password"
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton
-                              aria-label="toggle password visibility"
-                              onClick={handleTogglePasswordVisibility}
-                              edge="end"
-                            >
-                              {showPassword ? <VisibilityOff /> : <Visibility />}
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Grid>
-                  {/* <Grid item xs={12}>
-                    <FormControlLabel
-                      control={<Checkbox value="allowExtraEmails" color="primary" />}
-                      label="I want to receive inspiration, marketing promotions and updates via email."
-                    />
-                  </Grid> */}
-                </Grid>
-
-                <LoadingButton
-                  type='submit'
-                  fullWidth sx={{ mt: 3, mb: 2 }}
-                  loading={loading}
-                 
-                  variant="contained"
-                >
-                  Submit
-                </LoadingButton>
-
-                <Grid container justifyContent="flex-end">
-                  <Grid>
-                    <Link to={"/login"} variant="body2">
-                      Already have an account? Sign in
-                    </Link>
-                  </Grid>
-                </Grid>
-              </Box>
-            </Form>
-          )}
+                </Box>
+              </Form>
+            )}
           </Formik>
+
         </Box>
 
       </Container>
