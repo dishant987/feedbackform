@@ -36,8 +36,8 @@ connect()
 
 app.use("/api", router);
 
-app.get("/", (req, res) => {
-  res.json("Get Request");
+app.get("/test", (req, res) => {
+  res.json("Get Request testing");
 });
 
 // Ensure this is placed after all other middleware and routes to catch errors
