@@ -13,6 +13,10 @@ const app = express();
 const corsOptions = {
   origin: "https://feedbackform-fronted-fetgoq751-dishant987s-projects.vercel.app",
   credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "x-csrf-token"],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
 };
 
 app.use(cors(corsOptions));
@@ -49,4 +53,3 @@ app.use((err, req, res, next) => {
 cron.schedule('* * * * *', () => {
   console.log('Cron job running every minute');
 });
-
