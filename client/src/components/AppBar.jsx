@@ -20,7 +20,7 @@ const logoStyle = {
     cursor: 'pointer',
 };
 
-function AppAppBar({ toggleColorMode }) {
+function AppAppBar() {
     const [open, setOpen] = React.useState(false);
 
     const toggleDrawer = (newOpen) => () => {
@@ -85,25 +85,7 @@ function AppAppBar({ toggleColorMode }) {
                             }}
                         >
                             <Typography variant="body1" color="darkblue">Feedback System</Typography>
-                            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                                <MenuItem
-                                    onClick={() => scrollToSection('features')}
-                                    sx={{ py: '6px', px: '12px' }}
-                                >
-                                    <Typography variant="body2" color="text.primary">
-                                        Features
-                                    </Typography>
-                                </MenuItem>
-
-                                <MenuItem
-                                    onClick={() => scrollToSection('faq')}
-                                    sx={{ py: '6px', px: '12px' }}
-                                >
-                                    <Typography variant="body2" color="text.primary">
-                                        FAQ
-                                    </Typography>
-                                </MenuItem>
-                            </Box>
+                            
                         </Box>
                         <Box
                             sx={{
@@ -112,7 +94,7 @@ function AppAppBar({ toggleColorMode }) {
                                 alignItems: 'center',
                             }}
                         >
-                            <ToggleColorMode toggleColorMode={toggleColorMode} />
+                           
                             <Link to={'/login'}>
                                 <Button
 
@@ -156,16 +138,7 @@ function AppAppBar({ toggleColorMode }) {
                                         flexGrow: 1,
                                     }}
                                 >
-                                    <Box
-                                        sx={{
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            alignItems: 'end',
-                                            flexGrow: 1,
-                                        }}
-                                    >
-                                        <ToggleColorMode toggleColorMode={toggleColorMode} />
-                                    </Box>
+                                  
                                     <MenuItem onClick={() => scrollToSection('features')}>
                                         Features
                                     </MenuItem>

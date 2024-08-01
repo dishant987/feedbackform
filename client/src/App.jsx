@@ -93,12 +93,12 @@ function App() {
     {
       path: "/forgotpasswordlink",
       // element: <ProtectedRoute component={ResentEmail} />,
-      element: <ForgotPasswordLink/>,
+      element: <ForgotPasswordLink />,
     },
     {
       path: "/forgotpassword",
       // element: <ProtectedRoute component={ResentEmail} />,
-      element: <ForgotPassword/>,
+      element: <ForgotPassword />,
     },
   ]);
   return (

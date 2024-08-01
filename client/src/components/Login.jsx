@@ -43,7 +43,7 @@ export default function Login() {
         if (cookies.accessToken) {
             navigate('/feedback'); // Redirect to feedback if user is already logged in
         }
-    }, [cookies.accessToken, navigate]);
+    }, [cookies.accessToken]);
     const LoginSchema = Yup.object().shape({
         email: Yup.string().email('Invalid email').required('Required'),
         password: Yup.string().required('Required'),
@@ -177,7 +177,7 @@ export default function Login() {
                                     />
 
 
-                                    <Grid xs>
+                                    <Grid>
                                         <Link variant="body2" to={"/forgotpasswordlink"}>
                                             Forgot password?
                                         </Link>

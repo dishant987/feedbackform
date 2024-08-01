@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import { Link, useNavigate } from 'react-router-dom';
 import { Field, Form, Formik } from 'formik';
 import Grid from '@mui/material/Grid';
@@ -66,7 +64,7 @@ export default function ResentEmail() {
     setLoading(true); // Start loading
     try {
       const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/signup`, values);
-      console.log(response.data);
+     
       if (response.data.statuscode == 409 && response.data.message == "User with email or username already exists") {
         toast.error(response.data.message, { id: toastId })
 
@@ -181,7 +179,7 @@ export default function ResentEmail() {
                   type='submit'
                   fullWidth sx={{ mt: 3, mb: 2 }}
                   loading={loading}
-                  loadingPosition="end"
+                 
                   variant="contained"
                 >
                   Submit

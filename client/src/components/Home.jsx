@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import AppAppBar from './AppBar';
 const Home = (props) => {
-  const { toggleColorMode } = props;
+
   const navigate = useNavigate()
   const [cookies] = useCookies(['accessToken']);
 
@@ -30,7 +30,7 @@ const Home = (props) => {
       }}
     >
       
-      <AppAppBar toggleColorMode={toggleColorMode} />
+      <AppAppBar />
       {/* Add your content here */}
     </Box>
   );
