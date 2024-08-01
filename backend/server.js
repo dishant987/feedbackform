@@ -10,10 +10,9 @@ config();
 const app = express();
 
 const corsOptions = {
-  origin: 'https://feedbackform-fronted-fdrtqbvv9-dishant987s-projects.vercel.app/', // Ensure this matches exactly
+  origin: 'https://feedbackform-fronted.vercel.app', // Ensure this matches exactly
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
-  optionsSuccessStatus: 204,
 };
 
 app.use(cors(corsOptions)); // Apply CORS middleware first
