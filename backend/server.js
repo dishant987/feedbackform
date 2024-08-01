@@ -8,7 +8,7 @@ import cookieParser from "cookie-parser";
 
 const app = express();
 const corsOptions = {
-  origin: 'https://feedbackform-fronted.vercel.app',
+  origin: 'https://feedbackform-fronted-git-main-dishant987s-projects.vercel.app',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
   optionsSuccessStatus: 204,
