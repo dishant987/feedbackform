@@ -56,7 +56,7 @@ export default function Login() {
         const toastId = toast.loading("Logging In...");
         setLoading(true); // Start loading
         try {
-            const response = await axios.post('http://localhost:3000/api/users/signin', values);
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/signin`, values);
             console.log(response.data);
             if (response.data.statuscode === 200 && response.data.message === "Login SuccessFully") {
                 const { accessToken, refreshToken } = response.data;
@@ -90,6 +90,7 @@ export default function Login() {
             toast.error("Something wrong, try again later ")
         } finally {
             setLoading(false); // Stop loading
+            toast.dismiss(toastId)
         }
     };
 

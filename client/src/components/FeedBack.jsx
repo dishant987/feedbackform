@@ -181,7 +181,7 @@ const FeedBack = () => {
 
         try {
             const response = await axios.post(
-                'http://localhost:3000/api/feedback',
+                `${import.meta.env.VITE_BACKEND_URL}/api/feedback`,
                 {
                     ...values,
                     rating: rating,

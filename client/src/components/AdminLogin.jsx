@@ -43,7 +43,7 @@ export default function AdminLogin() {
 
     const handleSubmit = async (values) => {
         try {
-            const response = await axios.post('http://localhost:3000/api/admin', values);
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/admin`, values);
             if (response.status === 200 && response.data.message === 'Login successful') {
                 const { adminaccessToken, adminrefreshToken } = response.data
                 const expires = new Date();

@@ -56,7 +56,7 @@ export default function SignUp() {
         let toastId = toast.loading('loading...')
         setLoading(true); // Start loading
         try {
-            const response = await axios.post('http://localhost:3000/api/resentmail', values);
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/resentmail`, values);
             console.log(response);
 
             if (response.status == 200 && response.data.message == "Email is already verifyed") {

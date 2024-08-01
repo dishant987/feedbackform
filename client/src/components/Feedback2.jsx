@@ -126,7 +126,7 @@ const Feedback2 = () => {
 
 
     try {
-      const response = await axios.post('http://localhost:3000/api/feedback', {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/feedback`, {
         ...values,
         rating: rating,
         username: username

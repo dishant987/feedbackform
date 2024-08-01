@@ -65,7 +65,7 @@ export default function ResentEmail() {
     const toastId = toast.loading("loading...");
     setLoading(true); // Start loading
     try {
-      const response = await axios.post('http://localhost:3000/api/users/signup', values);
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/signup`, values);
       console.log(response.data);
       if (response.data.statuscode == 409 && response.data.message == "User with email or username already exists") {
         toast.error(response.data.message, { id: toastId })

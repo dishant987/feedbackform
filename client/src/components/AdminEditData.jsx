@@ -78,7 +78,7 @@ const AdminEditData = () => {
     const fetchData = async () => {
 
         try {
-            const response = await axios.get(`http://localhost:3000/api/getfeedbackdata/${id}`, {
+            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/getfeedbackdata/${id}`, {
                 headers: {
                     Authorization: `Bearer ${cookies.adminaccessToken}`,
                 },
@@ -100,7 +100,7 @@ const AdminEditData = () => {
 
 
         try {
-            const response = await axios.put('http://localhost:3000/api/editfeedbackdata', {
+            const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/editfeedbackdata`, {
                 ...values,
                 rating: rating,
                 id: id

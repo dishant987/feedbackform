@@ -84,7 +84,7 @@ export default function ForgotPassword() {
         console.log(values);
 
         try {
-            const response = await axios.post('http://localhost:3000/api/verifyforgotpassword',
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/verifyforgotpassword`,
                 {
                     token: token,
                     conformPassword: values.conformPassword
@@ -98,7 +98,7 @@ export default function ForgotPassword() {
                 navigate('/login');
             }
 
-        
+
         } catch (error) {
             console.error(error);
             if (error.response.status === 400 && error.response.data.error === "Token has expired or is invalid") {

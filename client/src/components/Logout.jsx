@@ -15,7 +15,7 @@ const Logout = () => {
     const handleLogout = async () => {
         try {
             const res = await
-                axios.post('http://localhost:3000/api/users/logout', {}, {
+                axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/logout`, {}, {
                     headers: {
                         Authorization: `Bearer ${cookies.accessToken}`,
                     },

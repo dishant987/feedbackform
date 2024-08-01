@@ -136,7 +136,7 @@ export default function FeedBackData() {
 
     const handleDeleteClick = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:3000/api/deletefeedback/${id}`, {
+            const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/deletefeedback/${id}`, {
                 headers: {
                     Authorization: `Bearer ${cookies.adminaccessToken}`,
                 },
