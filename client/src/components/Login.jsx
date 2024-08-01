@@ -53,8 +53,11 @@ export default function Login() {
         const toastId = toast.loading("Logging In...");
         setLoading(true); // Start loading
         try {
-            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/signin`, values);
-         
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/signin`, values, {
+                withCredentials: true
+            });
+
+
             if (response.data.statuscode === 200 && response.data.message === "Login SuccessFully") {
                 const { accessToken, refreshToken } = response.data;
 
@@ -92,132 +95,132 @@ export default function Login() {
     };
 
     return (
-       
-            <Grid container component="main" sx={{ height: '100vh' }}>
-                <CssBaseline />
-                <Grid
-                    item
-                    xs={false}
-                    sm={4}
-                    md={7}
+
+        <Grid container component="main" sx={{ height: '100vh' }}>
+            <CssBaseline />
+            <Grid
+                item
+                xs={false}
+                sm={4}
+                md={7}
+                sx={{
+                    backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundColor: (t) =>
+                        t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                }}
+            />
+            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                <Box
                     sx={{
-                        backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundColor: (t) =>
-                            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
+                        my: 8,
+                        mx: 4,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
                     }}
-                />
-                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-                    <Box
-                        sx={{
-                            my: 8,
-                            mx: 4,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
+                >
+                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Sign in
+                    </Typography>
+                    <Formik
+                        initialValues={{
+                            email: '',
+                            password: '',
                         }}
+                        validationSchema={LoginSchema}
+                        onSubmit={handleSubmit}
                     >
-                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                            <LockOutlinedIcon />
-                        </Avatar>
-                        <Typography component="h1" variant="h5">
-                            Sign in
-                        </Typography>
-                        <Formik
-                            initialValues={{
-                                email: '',
-                                password: '',
-                            }}
-                            validationSchema={LoginSchema}
-                            onSubmit={handleSubmit}
-                        >
-                            {({ errors, touched }) => (
-                                <Form>
-                                    <Field
-                                        margin="normal"
-                                        as={TextField}
+                        {({ errors, touched }) => (
+                            <Form>
+                                <Field
+                                    margin="normal"
+                                    as={TextField}
+                                    fullWidth
+                                    id="email"
+                                    label="Email Address"
+                                    name="email"
+                                    autoComplete="email"
+                                    autoFocus
+                                    error={errors.email && touched.email}
+                                    helperText={errors.email && touched.email ? <ErrorMessage children={errors.email} /> : null}
+                                />
+                                <Field
+                                    margin="normal"
+                                    as={TextField}
+                                    fullWidth
+                                    name="password"
+                                    label="Password"
+
+                                    type={showPassword ? 'text' : 'password'}
+                                    id="password"
+                                    autoComplete="current-password"
+
+                                    error={errors.password && touched.password}
+                                    helperText={errors.password && touched.password ? <ErrorMessage children={errors.password} /> : null}
+
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleTogglePasswordVisibility}
+                                                    edge="end"
+                                                >
+                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+
+
+                                <Grid>
+                                    <Link variant="body2" to={"/forgotpasswordlink"}>
+                                        Forgot password?
+                                    </Link>
+                                </Grid>
+
+
+                                {loading ? (
+                                    <LoadingButton fullWidth sx={{ mt: 3, mb: 2 }} loading variant="contained">
+                                        Submit
+                                    </LoadingButton>
+                                ) : (
+                                    <Button
+                                        type="submit"
                                         fullWidth
-                                        id="email"
-                                        label="Email Address"
-                                        name="email"
-                                        autoComplete="email"
-                                        autoFocus
-                                        error={errors.email && touched.email}
-                                        helperText={errors.email && touched.email ? <ErrorMessage children={errors.email} /> : null}
-                                    />
-                                    <Field
-                                        margin="normal"
-                                        as={TextField}
-                                        fullWidth
-                                        name="password"
-                                        label="Password"
+                                        variant="contained"
+                                        sx={{ mt: 3, mb: 2 }}
+                                        disabled={loading} // Disable button when loading
+                                    >
+                                        Sign In
+                                    </Button>
+                                )}
 
-                                        type={showPassword ? 'text' : 'password'}
-                                        id="password"
-                                        autoComplete="current-password"
-
-                                        error={errors.password && touched.password}
-                                        helperText={errors.password && touched.password ? <ErrorMessage children={errors.password} /> : null}
-
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    <IconButton
-                                                        aria-label="toggle password visibility"
-                                                        onClick={handleTogglePasswordVisibility}
-                                                        edge="end"
-                                                    >
-                                                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                                                    </IconButton>
-                                                </InputAdornment>
-                                            ),
-                                        }}
-                                    />
-
-
-                                    <Grid>
-                                        <Link variant="body2" to={"/forgotpasswordlink"}>
-                                            Forgot password?
+                                <Grid container>
+                                    <Grid item xs>
+                                        <Link variant="body2" to={"/resentemailverify"}>
+                                            Resent Email verify?
                                         </Link>
                                     </Grid>
-
-
-                                    {loading ? (
-                                        <LoadingButton fullWidth sx={{ mt: 3, mb: 2 }} loading variant="contained">
-                                            Submit
-                                        </LoadingButton>
-                                    ) : (
-                                        <Button
-                                            type="submit"
-                                            fullWidth
-                                            variant="contained"
-                                            sx={{ mt: 3, mb: 2 }}
-                                            disabled={loading} // Disable button when loading
-                                        >
-                                            Sign In
-                                        </Button>
-                                    )}
-
-                                    <Grid container>
-                                        <Grid item xs>
-                                            <Link variant="body2" to={"/resentemailverify"}>
-                                                Resent Email verify?
-                                            </Link>
-                                        </Grid>
-                                        <Grid item>
-                                            <Link to={"/signup"} variant="body2">
-                                                {"Don't have an account? Sign Up"}
-                                            </Link>
-                                        </Grid>
+                                    <Grid item>
+                                        <Link to={"/signup"} variant="body2">
+                                            {"Don't have an account? Sign Up"}
+                                        </Link>
                                     </Grid>
-                                </Form>
-                            )}
-                        </Formik>
-                    </Box>
-                </Grid>
+                                </Grid>
+                            </Form>
+                        )}
+                    </Formik>
+                </Box>
             </Grid>
-      
+        </Grid>
+
     );
 }
