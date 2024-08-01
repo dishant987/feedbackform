@@ -9,7 +9,6 @@ import { CookiesProvider } from 'react-cookie'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <>
     <CookiesProvider>
-
       <App />
       <Toaster
         position="top-center"

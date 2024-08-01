@@ -60,7 +60,7 @@ export default function ForgotPasswordLink() {
       if (error.response && error.response.status === 404 && error.response.data.error === "Email not Found") {
         toast.error(error.response.data.error, { id: toastId });
       } else {
-        toast.error("Something went wrong, try again later.");
+        toast.error("Something went wrong, try again later.", { id: toastId });
       }
     } finally {
       setLoading(false);

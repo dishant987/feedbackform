@@ -13,12 +13,14 @@ import {
     InputLabel,
     Select,
     MenuItem,
+    Box,
+    Rating,
+    InputAdornment,
+    IconButton,
 } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import Rating from '@mui/material/Rating';
-import Box from '@mui/material/Box';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import CustomConfetti from './CustomConfetti';
@@ -48,7 +50,10 @@ const lightTheme = createTheme({
     palette: {
         mode: 'light',
         primary: {
-            main: '#000000',
+            main: '#000',
+        },
+        background: {
+            default: '#f5f5f5',
         },
     },
     components: {
@@ -56,8 +61,15 @@ const lightTheme = createTheme({
             styleOverrides: {
                 root: {
                     '& $notchedOutline': {
-                        borderColor: '#000000',
+                        borderColor: '#f5f5f5',
                     },
+                },
+            },
+        },
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    color: '#f5f5f5',
                 },
             },
         },
@@ -68,7 +80,10 @@ const darkTheme = createTheme({
     palette: {
         mode: 'dark',
         primary: {
-            main: '#ffffff',
+            main: '#f5f5f5',
+        },
+        background: {
+            default: '#f5f5f5',
         },
     },
     components: {
@@ -76,8 +91,15 @@ const darkTheme = createTheme({
             styleOverrides: {
                 root: {
                     '& $notchedOutline': {
-                        borderColor: '#ffffff',
+                        borderColor: '#f5f5f5',
                     },
+                },
+            },
+        },
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    color: '#000',
                 },
             },
         },
@@ -203,7 +225,6 @@ const FeedBack = () => {
                     navigate('/logout');
                 }, 5000);
             }
-          
         } catch (error) {
             console.error(error);
             toast.error('Something went wrong, please try again later');
@@ -217,18 +238,18 @@ const FeedBack = () => {
     };
 
     return (
-        <>
+        <ThemeProvider theme={themes[themeMode]}>
             {showConf && <CustomConfetti numberOfPieces={1500} />}
-
 
             <Box
                 component="div"
                 sx={{
-                    background: themes[themeMode].palette.mode === 'light' ? 'linear-gradient(45deg, #b9e1f9 30%, #e9f0e2 90%)' : 'linear-gradient(45deg, #333333 30%, #111111 90%)',
+                    background: themes[themeMode].palette.mode === 'light'
+                        ? 'linear-gradient(45deg, #b9e1f9 30%, #e9f0e2 90%)'
+                        : 'linear-gradient(45deg, #333333 30%, #111111 90%)',
                     minHeight: '100vh',
                     display: 'flex',
                     flexDirection: 'row',
-
                     justifyContent: 'center',
                     alignItems: 'center',
                 }}
@@ -244,9 +265,7 @@ const FeedBack = () => {
                         sx={{ borderColor: themes[themeMode].palette.primary.main }}
                     >
                         <MenuItem value={'light'}>Light Mode</MenuItem>
-                        <MenuItem  value={'dark'}>Dark Mode</MenuItem>
-                        <MenuItem value={'blue'}>Yellow Mode</MenuItem>
-                        <MenuItem value={'green'}>Green Mode</MenuItem>
+                        <MenuItem value={'dark'}>Dark Mode</MenuItem>
                     </Select>
                 </FormControl>
                 <Container maxWidth="sm">
@@ -255,7 +274,7 @@ const FeedBack = () => {
                         sx={{
                             textAlign: 'center',
                             marginBottom: '20px',
-                            color: themeMode === 'dark' ? '#ffffff' : undefined,
+                            color: themeMode === 'dark' ? '#ffffff' : '#000000',
                         }}
                     >
                         Feedback Form
@@ -275,7 +294,7 @@ const FeedBack = () => {
                                     setSubmitting(false);
                                 }}
                             >
-                                {({ errors, touched, isValid, isSubmitting }) => (
+                                {({ errors, touched, isSubmitting }) => (
                                     <Form>
                                         <Field
                                             as={TextField}
@@ -287,8 +306,7 @@ const FeedBack = () => {
                                             fullWidth
                                             margin="normal"
                                             error={errors.name && touched.name}
-                                            helperText={errors.name && touched.name ? errors.name : null}
-                                            sx={{ borderColor: themes[themeMode].palette.primary.main }}
+                                            helperText={errors.name && touched.name ? <ErrorMessage>{errors.name}</ErrorMessage> : null}
                                         />
 
                                         <Field
@@ -300,8 +318,7 @@ const FeedBack = () => {
                                             fullWidth
                                             margin="normal"
                                             error={errors.email && touched.email}
-                                            helperText={errors.email && touched.email ? errors.email : null}
-                                            sx={{ borderColor: themes[themeMode].palette.primary.main }}
+                                            helperText={errors.email && touched.email ? <ErrorMessage>{errors.email}</ErrorMessage> : null}
                                         />
 
                                         <Field
@@ -313,11 +330,10 @@ const FeedBack = () => {
                                             fullWidth
                                             margin="normal"
                                             error={errors.phone && touched.phone}
-                                            helperText={errors.phone && touched.phone ? errors.phone : null}
+                                            helperText={errors.phone && touched.phone ? <ErrorMessage>{errors.phone}</ErrorMessage> : null}
                                             InputProps={{
                                                 inputComponent: TextMaskCustom,
                                             }}
-                                            sx={{ borderColor: themes[themeMode].palette.primary.main }}
                                         />
 
                                         <Field
@@ -330,8 +346,7 @@ const FeedBack = () => {
                                             fullWidth
                                             margin="normal"
                                             error={errors.message && touched.message}
-                                            helperText={errors.message && touched.message ? errors.message : null}
-                                            sx={{ borderColor: themes[themeMode].palette.primary.main }}
+                                            helperText={errors.message && touched.message ? <ErrorMessage>{errors.message}</ErrorMessage> : null}
                                         />
 
                                         <Box textAlign={'center'}>
@@ -373,7 +388,7 @@ const FeedBack = () => {
                                                     fullWidth
                                                     variant="contained"
                                                     sx={{ mt: 6, mb: 2 }}
-                                                    disabled={loading} // Disable button when loading
+                                                    disabled={loading}
                                                 >
                                                     Submit
                                                 </Button>
@@ -384,11 +399,9 @@ const FeedBack = () => {
                             </Formik>
                         </CardContent>
                     </Card>
-
                 </Container>
-
             </Box>
-        </>
+        </ThemeProvider>
     );
 };
 

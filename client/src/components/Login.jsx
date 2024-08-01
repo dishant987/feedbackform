@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 
 import Paper from '@mui/material/Paper';
@@ -35,7 +34,7 @@ export default function Login() {
     const [loading, setLoading] = useState(false); // Add loading state
     const navigate = useNavigate()
     const [cookies, setCookie, removeCookie] = useCookies(['token']);
-
+    console.log(cookies.accessToken)
     const handleTogglePasswordVisibility = () => {
         setShowPassword((prev) => !prev);
     };
@@ -90,137 +89,113 @@ export default function Login() {
             toast.error("Something wrong, try again later ", { id: toastId })
         } finally {
             setLoading(false); // Stop loading
-            toast.dismiss(toastId)
+            
         }
     };
 
     return (
 
-        <Grid container component="main" sx={{ height: '100vh' }}>
-            <CssBaseline />
-            <Grid
-                item
-                xs={false}
-                sm={4}
-                md={7}
-                sx={{
-                    backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundColor: (t) =>
-                        t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                }}
-            />
-            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-                <Box
-                    sx={{
-                        my: 8,
-                        mx: 4,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
+        <Grid container component="main" sx={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Grid item xs={12} sm={8} md={4} component={Paper} elevation={6} square sx={{ borderRadius: 4 }}>
+          <Box
+            sx={{
+              my: 8,
+              mx: 4,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <Avatar sx={{ m: 0.5, bgcolor: 'secondary.main' }}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign in
+            </Typography>
+            <Formik
+              initialValues={{ email: '', password: '' }}
+              validationSchema={LoginSchema}
+              onSubmit={handleSubmit}
+            >
+              {({ errors, touched }) => (
+                <Form>
+                  <Field
+                    as={TextField}
+                    margin="normal"
+                    fullWidth
+                    id="email"
+                    label="Email Address"
+                    name="email"
+                    autoComplete="email"
+                    autoFocus
+                    error={errors.email && touched.email}
+                    helperText={errors.email && touched.email ? <ErrorMessage>{errors.email}</ErrorMessage> : null}
+                  />
+                  <Field
+                    as={TextField}
+                    margin="normal"
+                    fullWidth
+                    name="password"
+                    label="Password"
+                    type={showPassword ? 'text' : 'password'}
+                    id="password"
+                    autoComplete="current-password"
+                    error={errors.password && touched.password}
+                    helperText={errors.password && touched.password ? <ErrorMessage>{errors.password}</ErrorMessage> : null}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleTogglePasswordVisibility}
+                            edge="end"
+                          >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
                     }}
-                >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign in
-                    </Typography>
-                    <Formik
-                        initialValues={{
-                            email: '',
-                            password: '',
-                        }}
-                        validationSchema={LoginSchema}
-                        onSubmit={handleSubmit}
+                  />
+                  <Grid container>
+                    <Grid item xs>
+                      <Link variant="body2" to="/forgotpasswordlink">
+                        Forgot password?
+                      </Link>
+                    </Grid>
+                  </Grid>
+                  {loading ? (
+                    <LoadingButton fullWidth sx={{ mt: 3, mb: 2 }} loading variant="contained">
+                      Submit
+                    </LoadingButton>
+                  ) : (
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      sx={{ mt: 3, mb: 2 }}
+                      disabled={loading} // Disable button when loading
                     >
-                        {({ errors, touched }) => (
-                            <Form>
-                                <Field
-                                    margin="normal"
-                                    as={TextField}
-                                    fullWidth
-                                    id="email"
-                                    label="Email Address"
-                                    name="email"
-                                    autoComplete="email"
-                                    autoFocus
-                                    error={errors.email && touched.email}
-                                    helperText={errors.email && touched.email ? <ErrorMessage children={errors.email} /> : null}
-                                />
-                                <Field
-                                    margin="normal"
-                                    as={TextField}
-                                    fullWidth
-                                    name="password"
-                                    label="Password"
-
-                                    type={showPassword ? 'text' : 'password'}
-                                    id="password"
-                                    autoComplete="current-password"
-
-                                    error={errors.password && touched.password}
-                                    helperText={errors.password && touched.password ? <ErrorMessage children={errors.password} /> : null}
-
-                                    InputProps={{
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <IconButton
-                                                    aria-label="toggle password visibility"
-                                                    onClick={handleTogglePasswordVisibility}
-                                                    edge="end"
-                                                >
-                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                                                </IconButton>
-                                            </InputAdornment>
-                                        ),
-                                    }}
-                                />
-
-
-                                <Grid>
-                                    <Link variant="body2" to={"/forgotpasswordlink"}>
-                                        Forgot password?
-                                    </Link>
-                                </Grid>
-
-
-                                {loading ? (
-                                    <LoadingButton fullWidth sx={{ mt: 3, mb: 2 }} loading variant="contained">
-                                        Submit
-                                    </LoadingButton>
-                                ) : (
-                                    <Button
-                                        type="submit"
-                                        fullWidth
-                                        variant="contained"
-                                        sx={{ mt: 3, mb: 2 }}
-                                        disabled={loading} // Disable button when loading
-                                    >
-                                        Sign In
-                                    </Button>
-                                )}
-
-                                <Grid container>
-                                    <Grid item xs>
-                                        <Link variant="body2" to={"/resentemailverify"}>
-                                            Resent Email verify?
-                                        </Link>
-                                    </Grid>
-                                    <Grid item>
-                                        <Link to={"/signup"} variant="body2">
-                                            {"Don't have an account? Sign Up"}
-                                        </Link>
-                                    </Grid>
-                                </Grid>
-                            </Form>
-                        )}
-                    </Formik>
-                </Box>
-            </Grid>
+                      Sign In
+                    </Button>
+                  )}
+                  <Grid container>
+                    <Grid item xs>
+                      <Link variant="body2" to="/resentemailverify">
+                        Resent Email verify?
+                      </Link>
+                    </Grid>
+                    <Grid item>
+                      <Link to="/signup" variant="body2">
+                        {"Don't have an account? Sign Up"}
+                      </Link>
+                    </Grid>
+                  </Grid>
+                </Form>
+              )}
+            </Formik>
+          </Box>
         </Grid>
+      </Grid>
 
     );
 }

@@ -10,7 +10,8 @@ config();
 const app = express();
 
 const corsOptions = {
-  origin: "https://feedbackform-fronted.vercel.app", // Ensure this matches exactly
+  // origin: "https://feedbackform-fronted.vercel.app", // Ensure this matches exactly
+  origin: "*", // Ensure this matches exactly
   credentials: true, // Allow credentials (cookies, authorization headers, etc.)
 };
 

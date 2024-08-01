@@ -84,34 +84,36 @@ function AppAppBar() {
                                 px: 0,
                             }}
                         >
-                            <Typography variant="body1" color="darkblue">Feedback System</Typography>
-                            
+                            <Typography variant="body1" color="darkblue" padding={3}>Feedback System</Typography>
+
                         </Box>
                         <Box
                             sx={{
                                 display: { xs: 'none', md: 'flex' },
-                                gap: 0.5,
+                                gap: 1.5,
                                 alignItems: 'center',
                             }}
                         >
-                           
+
                             <Link to={'/login'}>
                                 <Button
-
+                                    sx={{ borderRadius: 4, color: 'white'  }}
                                     color="primary"
-                                    variant="text"
+                                    variant='outlined'
                                     size="small"
-                                    component="a"
+                                    
+                                  
                                 >
                                     Sign In
                                 </Button>
                             </Link>
                             <Link to={"/signup"}>
                                 <Button
+                                    sx={{ borderRadius: 4 }}
                                     color="primary"
                                     variant="contained"
                                     size="small"
-                                    component="a"
+                                   
 
 
                                 >
@@ -138,27 +140,16 @@ function AppAppBar() {
                                         flexGrow: 1,
                                     }}
                                 >
-                                  
-                                    <MenuItem onClick={() => scrollToSection('features')}>
-                                        Features
-                                    </MenuItem>
-                                    <MenuItem onClick={() => scrollToSection('testimonials')}>
-                                        Testimonials
-                                    </MenuItem>
-                                    <MenuItem onClick={() => scrollToSection('highlights')}>
-                                        Highlights
-                                    </MenuItem>
-                                    <MenuItem onClick={() => scrollToSection('pricing')}>
-                                        Pricing
-                                    </MenuItem>
-                                    <MenuItem onClick={() => scrollToSection('faq')}>FAQ</MenuItem>
+
+
+
                                     <Divider />
                                     <MenuItem>
                                         <Button
                                             color="primary"
                                             variant="contained"
                                             component="a"
-                                            href="/material-ui/getting-started/templates/sign-up/"
+                                            href="/signup"
                                             target="_blank"
                                             sx={{ width: '100%' }}
                                         >
@@ -170,7 +161,7 @@ function AppAppBar() {
                                             color="primary"
                                             variant="outlined"
                                             component="a"
-                                            href="/material-ui/getting-started/templates/sign-in/"
+                                            href="/login"
                                             target="_blank"
                                             sx={{ width: '100%' }}
                                         >
