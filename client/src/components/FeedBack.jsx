@@ -183,21 +183,16 @@ const FeedBack = () => {
     const [loading, setLoading] = useState(false);
     const [hover, setHover] = useState(-1);
     const [showConf, setShowConf] = useState(false);
-    const [cookies] = useCookies(['accessToken']);
+    const [cookies, setCookie] = useCookies(['accessToken', 'refreshToken']);
     const [themeMode, setThemeMode] = useState('light');
 
-    const navigate = useNavigate();
-
+    const navigate = useNavigate()
     useEffect(() => {
-        const token = cookies.accessToken;
-
-        if (token) {
-            const decoded = jwtDecode(token);
-            setDecodedToken(decoded);
-        }
-    }, [cookies.accessToken]);
-
+        const decoded = jwtDecode(cookies.accessToken);
+        setDecodedToken(decoded);
+    }, [cookies]);
     const handleSubmit = async (values) => {
+
         const { username } = decodedToken;
         setLoading(true);
 

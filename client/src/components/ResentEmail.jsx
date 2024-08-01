@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import { Link, useNavigate } from 'react-router-dom';
 import { Field, Form, Formik } from 'formik';
 import Grid from '@mui/material/Grid';
@@ -15,7 +13,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import * as Yup from 'yup';
 import { IconButton, InputAdornment, Paper } from '@mui/material';
-import { ArrowBack, ErrorOutlineOutlined, ErrorOutlineTwoTone, Visibility, VisibilityOff } from '@mui/icons-material';
+import { ArrowBack} from '@mui/icons-material';
 import ErrorIcon from '@mui/icons-material/Error';
 import axios from 'axios';
 import toast from 'react-hot-toast';
@@ -36,13 +34,7 @@ export default function SignUp() {
 
     const [loading, setLoading] = useState(false); // Add loading state
     const navigate = useNavigate()
-    const [cookies] = useCookies(['accessToken']);
 
-    useEffect(() => {
-        if (cookies.accessToken) {
-            navigate('/feedback'); // Redirect to feedback if user is already logged in
-        }
-    }, [cookies.accessToken]);
 
 
 

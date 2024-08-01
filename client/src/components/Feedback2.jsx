@@ -105,19 +105,17 @@ const Feedback2 = () => {
   const [loading, setLoading] = useState(false);
   const [hover, setHover] = useState(-1);
   const [showConf, setShowConf] = useState(false)
-  const [cookies] = useCookies(['accessToken']);
+  const [cookies, setCookie] = useCookies(['accessToken', 'refreshToken']);
 
   const navigate = useNavigate()
-  // const decoded = jwt_decode(token);
-  // setDecodedToken(decoded);
-  useEffect(() => {
-    const token = cookies.accessToken;
 
-    if (token) {
-      const decoded = jwtDecode(token);
-      setDecodedToken(decoded);
-    }
-  }, [cookies.accessToken]);
+  useEffect(() => {
+    const decoded = jwtDecode(cookies.accessToken);
+  setDecodedToken(decoded);
+  }, [cookies]);
+
+  console.log(decodedToken)
+
 
   const handleSubmit = async (values) => {
     const { username } = decodedToken;

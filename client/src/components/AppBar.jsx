@@ -115,7 +115,6 @@ function AppAppBar() {
                                     size="small"
                                    
 
-
                                 >
                                     Sign up
                                 </Button>
@@ -178,9 +177,9 @@ function AppAppBar() {
     );
 }
 
-AppAppBar.propTypes = {
-    mode: PropTypes.oneOf(['dark', 'light']).isRequired,
-    toggleColorMode: PropTypes.func.isRequired,
-};
+// AppAppBar.propTypes = {
+//     mode: PropTypes.oneOf(['dark', 'light']).isRequired,
+//     toggleColorMode: PropTypes.func.isRequired,
+// };
 
 export default AppAppBar;
