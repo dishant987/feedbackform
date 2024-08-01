@@ -118,111 +118,111 @@ export default function ForgotPassword() {
     // };
 
     return (
-   
-            <Container component="main" maxWidth="xs">
-                <CssBaseline />
 
-                <Paper sx={{ padding: '25px', marginTop: '200px' }}>
-                    <Link to={'/login'}>
-                        <Button variant='outlined' startIcon={<ArrowBack />}>
+        <Container component="main" maxWidth="xs">
+            <CssBaseline />
+
+            <Paper sx={{ padding: '25px', marginTop: '200px' }}>
+                <Link to={'/login'}>
+                    <Button variant='outlined' startIcon={<ArrowBack />}>
                         back
-                        </Button>
-                    </Link>
-                    <Box
-                        sx={{
-                            marginTop: 3,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                            <LockOutlinedIcon />
-                        </Avatar>
-                        <Typography sx={{ paddingY: '10px' }} component="h1" variant="h5">
-                            Forgot Password
-                        </Typography>
-                        {/* <Typography sx={{ paddingY: '10px' }} component="h2" variant="h6">
+                    </Button>
+                </Link>
+                <Box
+                    sx={{
+                        marginTop: 3,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                    <Typography sx={{ paddingY: '10px' }} component="h1" variant="h5">
+                        Forgot Password
+                    </Typography>
+                    {/* <Typography sx={{ paddingY: '10px' }} component="h2" variant="h6">
                             Link expires in: {formatTime(timeLeft)}
                         </Typography> */}
-                        <Formik
-                            initialValues={{
-                                newPassword: '',
-                                conformPassword: ''
-                            }}
-                            validationSchema={forgotSchema}
-                            onSubmit={handleSubmit}
-                        > {({ errors, touched, isValid }) => (
-                            <Form>
-                                <Box>
-                                    <Field
-                                        margin="normal"
-                                        as={TextField}
-                                        type={showPassword ? 'text' : 'password'}
-                                        fullWidth
-                                        error={errors.newPassword && touched.newPassword}
-                                        helperText={errors.newPassword && touched.newPassword ? <ErrorMessage children={errors.newPassword} /> : null}
-                                        id="newPassword"
-                                        label="New Password"
-                                        name="newPassword"
-                                        autoComplete="new-password"
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    <IconButton
-                                                        aria-label="toggle password visibility"
-                                                        onClick={handleTogglePasswordVisibility}
-                                                        edge="end"
-                                                    >
-                                                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                                                    </IconButton>
-                                                </InputAdornment>
-                                            ),
-                                        }}
-                                    />
+                    <Formik
+                        initialValues={{
+                            newPassword: '',
+                            conformPassword: ''
+                        }}
+                        validationSchema={forgotSchema}
+                        onSubmit={handleSubmit}
+                    > {({ errors, touched, isValid }) => (
+                        <Form>
+                            <Box>
+                                <Field
+                                    margin="normal"
+                                    as={TextField}
+                                    type={showPassword ? 'text' : 'password'}
+                                    fullWidth
+                                    error={errors.newPassword && touched.newPassword}
+                                    helperText={errors.newPassword && touched.newPassword ? <ErrorMessage children={errors.newPassword} /> : null}
+                                    id="newPassword"
+                                    label="New Password"
+                                    name="newPassword"
+                                    autoComplete="new-password"
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleTogglePasswordVisibility}
+                                                    edge="end"
+                                                >
+                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
 
-                                    <Field
-                                        margin="normal"
-                                        as={TextField}
-                                        type={showPassword1 ? 'text' : 'password'}
-                                        fullWidth
-                                        error={errors.conformPassword && touched.conformPassword}
-                                        helperText={errors.conformPassword && touched.conformPassword ? <ErrorMessage children={errors.conformPassword} /> : null}
-                                        id="conformPassword"
-                                        label="Confirm Password"
-                                        name="conformPassword"
-                                        autoComplete="new-password"
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    <IconButton
-                                                        aria-label="toggle password visibility"
-                                                        onClick={handleTogglePasswordVisibility1}
-                                                        edge="end"
-                                                    >
-                                                        {showPassword1 ? <VisibilityOff /> : <Visibility />}
-                                                    </IconButton>
-                                                </InputAdornment>
-                                            ),
-                                        }}
-                                    />
+                                <Field
+                                    margin="normal"
+                                    as={TextField}
+                                    type={showPassword1 ? 'text' : 'password'}
+                                    fullWidth
+                                    error={errors.conformPassword && touched.conformPassword}
+                                    helperText={errors.conformPassword && touched.conformPassword ? <ErrorMessage children={errors.conformPassword} /> : null}
+                                    id="conformPassword"
+                                    label="Confirm Password"
+                                    name="conformPassword"
+                                    autoComplete="new-password"
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleTogglePasswordVisibility1}
+                                                    edge="end"
+                                                >
+                                                    {showPassword1 ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
 
-                                    <LoadingButton
-                                        type='submit'
-                                        fullWidth sx={{ mt: 3, mb: 2 }}
-                                        loading={loading}
-                                        loadingPosition="end"
-                                        variant="contained"
-                                    >
-                                        Send Link
-                                    </LoadingButton>
-                                </Box>
-                            </Form>
-                        )}
-                        </Formik>
-                    </Box>
-                </Paper>
-            </Container>
-     
+                                <LoadingButton
+                                    type='submit'
+                                    fullWidth sx={{ mt: 3, mb: 2 }}
+                                    loading={loading}
+                                    loadingPosition="end"
+                                    variant="contained"
+                                >
+                                    Send Link
+                                </LoadingButton>
+                            </Box>
+                        </Form>
+                    )}
+                    </Formik>
+                </Box>
+            </Paper>
+        </Container>
+
     );
 }
