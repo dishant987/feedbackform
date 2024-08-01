@@ -26,9 +26,6 @@ import ForgotPassword from "./components/forgotpassword/ForgotPassword";
 function App() {
   const [mode, setMode] = useState("light");
 
-  const toggleColorMode = () => {
-    setMode((prev) => (prev === "dark" ? "light" : "dark"));
-  };
   const theme = createTheme({
     palette: {
       mode: mode,

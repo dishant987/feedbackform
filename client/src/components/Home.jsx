@@ -5,7 +5,7 @@ import '../App.css'
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import AppAppBar from './AppBar';
-const Home = (props) => {
+const Home = () => {
 
   const navigate = useNavigate()
   const [cookies] = useCookies(['accessToken']);
