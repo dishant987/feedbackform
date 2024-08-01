@@ -31,9 +31,6 @@ const ErrorMessage = ({ children }) => (
 );
 
 export default function Login() {
-
-
-
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false); // Add loading state
     const navigate = useNavigate()
@@ -57,7 +54,7 @@ export default function Login() {
         setLoading(true); // Start loading
         try {
             const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/signin`, values);
-            console.log(response.data);
+         
             if (response.data.statuscode === 200 && response.data.message === "Login SuccessFully") {
                 const { accessToken, refreshToken } = response.data;
 

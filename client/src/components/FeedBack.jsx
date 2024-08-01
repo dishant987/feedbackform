@@ -203,7 +203,7 @@ const FeedBack = () => {
                     navigate('/logout');
                 }, 5000);
             }
-            console.log(response);
+          
         } catch (error) {
             console.error(error);
             toast.error('Something went wrong, please try again later');
