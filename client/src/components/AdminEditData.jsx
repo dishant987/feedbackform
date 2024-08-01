@@ -129,7 +129,7 @@ const AdminEditData = () => {
 
 
     return (
-        <ThemeProvider theme={theme}>
+     
 
             <Box
                 component="div"
@@ -273,7 +273,7 @@ const AdminEditData = () => {
                     </Card>
                 </Container>
             </Box>
-        </ThemeProvider>
+      
     );
 };
 

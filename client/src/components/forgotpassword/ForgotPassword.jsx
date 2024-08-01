@@ -118,7 +118,7 @@ export default function ForgotPassword() {
     // };
 
     return (
-        <ThemeProvider theme={defaultTheme}>
+   
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
 
@@ -222,6 +222,6 @@ export default function ForgotPassword() {
                     </Box>
                 </Paper>
             </Container>
-        </ThemeProvider>
+     
     );
 }

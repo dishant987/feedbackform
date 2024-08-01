@@ -82,7 +82,7 @@ export default function ForgotPasswordLink() {
     };
 
     return (
-        <ThemeProvider theme={defaultTheme}>
+   
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
 
@@ -144,6 +144,6 @@ export default function ForgotPasswordLink() {
                 </Paper>
 
             </Container>
-        </ThemeProvider>
+     
     );
 }

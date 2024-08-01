@@ -82,7 +82,7 @@ export default function SignUp() {
     };
 
     return (
-        <ThemeProvider theme={defaultTheme}>
+       
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
 
@@ -153,6 +153,6 @@ export default function SignUp() {
                 </Paper>
 
             </Container>
-        </ThemeProvider>
+     
     );
 }

@@ -217,7 +217,7 @@ const FeedBack = () => {
     };
 
     return (
-        <ThemeProvider theme={themes[themeMode]}>
+        <>
             {showConf && <CustomConfetti numberOfPieces={1500} />}
 
 
@@ -388,7 +388,7 @@ const FeedBack = () => {
                 </Container>
 
             </Box>
-        </ThemeProvider>
+        </>
     );
 };
 

@@ -156,7 +156,7 @@ const Feedback2 = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       {showConf && (
         <CustomConfetti numberOfPieces={1500} />
       )}
@@ -304,7 +304,7 @@ const Feedback2 = () => {
           </Card>
         </Container>
       </Box>
-    </ThemeProvider>
+    </>
   );
 };
 

@@ -69,7 +69,7 @@ export default function AdminLogin() {
     };
 
     return (
-        <ThemeProvider theme={defaultTheme}>
+       
             <Grid container alignItems={'center'} marginTop={'140px'} justifyContent={'center'} component="main" >
                 {/* <CssBaseline /> */}
 
@@ -157,6 +157,6 @@ export default function AdminLogin() {
                     </Box>
                 </Grid>
             </Grid>
-        </ThemeProvider>
+      
     );
 }

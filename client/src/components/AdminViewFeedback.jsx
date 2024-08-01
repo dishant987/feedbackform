@@ -96,7 +96,7 @@ const AdminViewFeedback = () => {
 
 
   return (
-    <ThemeProvider theme={theme}>
+
 
       <Box
         component="div"
@@ -214,7 +214,7 @@ const AdminViewFeedback = () => {
           </Card>
         </Container>
       </Box>
-    </ThemeProvider>
+  
   );
 };
 
