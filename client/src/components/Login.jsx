@@ -87,7 +87,7 @@ export default function Login() {
             }
         } catch (error) {
             console.error(error);
-            toast.error("Something wrong, try again later ",{ id: toastId })
+            toast.error("Something wrong, try again later ", { id: toastId })
         } finally {
             setLoading(false); // Stop loading
             toast.dismiss(toastId)

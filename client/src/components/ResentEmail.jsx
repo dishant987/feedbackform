@@ -82,57 +82,43 @@ export default function SignUp() {
     };
 
     return (
-       
-            <Container component="main" maxWidth="xs">
-                <CssBaseline />
 
-                <Paper sx={{ padding: '25px', marginTop: '200px' }}>
-                    <Link to={'/login'}>
-                        <Button variant='outlined' startIcon={<ArrowBack />}>
+        <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <Paper sx={{ padding: '25px', marginTop: '200px' }}>
+                <Link to={'/login'}>
+                    <Button variant='outlined' startIcon={<ArrowBack />}></Button>
+                </Link>
+                <Box
+                    sx={{
+                        marginTop: 3,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                        <LockOutlinedIcon />
+                    </Avatar>
 
-                        </Button>
-                    </Link>
-                    <Box
-                        sx={{
-                            marginTop: 3,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                        }}
+                    <Formik
+                        initialValues={{ email: '' }}
+                        validationSchema={SignupSchema}
+                        onSubmit={handleSubmit}
                     >
-                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                            <LockOutlinedIcon />
-                        </Avatar>
-
-                        <Formik
-                            initialValues={{
-
-                                email: '',
-
-                            }}
-                            validationSchema={SignupSchema}
-                            onSubmit={handleSubmit}
-                        > {({ errors, touched, isValid }) => (
+                        {({ errors, touched, isValid }) => (
                             <Form>
                                 <Box sx={{ mt: 2 }}>
-
-
-
                                     <Field
                                         as={TextField}
-
                                         fullWidth
                                         error={errors.email && touched.email}
-                                        helperText={errors.email && touched.email ? <ErrorMessage children={errors.email} /> : null}
+                                        helperText={errors.email && touched.email ? <ErrorMessage name="email" /> : null}
                                         id="email"
                                         label="Email Address"
                                         name="email"
                                         autoComplete="email"
                                     />
-
-
-
-
 
                                     <LoadingButton
                                         type='submit'
@@ -143,16 +129,13 @@ export default function SignUp() {
                                     >
                                         Resent
                                     </LoadingButton>
-
-
                                 </Box>
                             </Form>
                         )}
-                        </Formik>
-                    </Box>
-                </Paper>
+                    </Formik>
+                </Box>
+            </Paper>
+        </Container>
 
-            </Container>
-     
     );
 }
