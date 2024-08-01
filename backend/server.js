@@ -3,25 +3,25 @@ import { config } from "dotenv";
 import cors from "cors";
 import connect from "./src/database/conn.js";
 import router from "./src/router/route.js";
-
 import cookieParser from "cookie-parser";
 
+config();
+
 const app = express();
+
 const corsOptions = {
-  origin: 'https://feedbackform-fronted-git-main-dishant987s-projects.vercel.app',
+  origin: 'https://feedbackform-fronted.vercel.app',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
   optionsSuccessStatus: 204,
 };
 
 app.use(cors(corsOptions));
-const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-// app.use(express.static("public"))
 
-config();
+const port = process.env.PORT || 3000;
 
 connect()
   .then(() => {
@@ -31,7 +31,6 @@ connect()
   })
   .catch((error) => {
     console.error("Error connecting to the database:", error);
-
     process.exit(1);
   });
 
@@ -41,7 +40,8 @@ app.get("/", (req, res) => {
   res.json("Get Request");
 });
 
-// app.use((err, req, res, next) => {
-//   console.error(err.stack);
-//   res.status(500).send("Internal Server Error");
-// });
+// Ensure this is placed after all other middleware and routes to catch errors
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Internal Server Error");
+});
