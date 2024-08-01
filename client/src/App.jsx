@@ -29,7 +29,6 @@ function App() {
   const toggleColorMode = () => {
     setMode((prev) => (prev === "dark" ? "light" : "dark"));
   };
-  console.log(mode);
   const theme = createTheme({
     palette: {
       mode: mode,
