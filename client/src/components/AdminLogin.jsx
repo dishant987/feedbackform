@@ -30,7 +30,7 @@ export default function AdminLogin() {
 
     useEffect(() => {
         if (cookies.adminaccessToken) {
-            navigate('/feedbackdata'); // Redirect to feedback if user is already logged in
+            navigate('/feedbackdata');
         }
     }, [cookies.adminaccessToken, navigate]);
     const handleTogglePasswordVisibility = () => {
@@ -69,94 +69,95 @@ export default function AdminLogin() {
     };
 
     return (
-       
-            <Grid container alignItems={'center'} marginTop={'140px'} justifyContent={'center'} component="main" >
-                {/* <CssBaseline /> */}
 
-                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} >
-                    <Box
-                        sx={{
-                            my: 4,
-                            mx: 4,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
+        <Grid container alignItems={'center'} marginTop={'140px'} justifyContent={'center'} component="main" >
+            {/* <CssBaseline /> */}
 
+            <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} >
+                <Box
+                    sx={{
+                        my: 4,
+                        mx: 4,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+
+                    }}
+                >
+                    <Avatar sx={{ bgcolor: 'secondary.main' }}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Admin Login
+                    </Typography>
+                    <Formik
+                        initialValues={{
+                            email: '',
+                            password: '',
                         }}
+                        validationSchema={LoginSchema}
+                        onSubmit={handleSubmit}
                     >
-                        <Avatar sx={{ bgcolor: 'secondary.main' }}>
-                            <LockOutlinedIcon />
-                        </Avatar>
-                        <Typography component="h1" variant="h5">
-                            Admin Login
-                        </Typography>
-                        <Formik
-                            initialValues={{
-                                email: '',
-                                password: '',
-                            }}
-                            validationSchema={LoginSchema}
-                            onSubmit={handleSubmit}
-                        >
-                            {({ errors, touched }) => (
-                                <Form>
-                                    <Field
-                                        margin="normal"
-                                        as={TextField}
+                        {({ errors, touched }) => (
+                            <Form>
+                                <Field
+                                    margin="normal"
+                                    as={TextField}
 
-                                        fullWidth
-                                        id="email"
-                                        label="Email Address"
-                                        name="email"
-                                        autoComplete="email"
-                                        autoFocus
-                                        error={errors.email && touched.email}
-                                        helperText={errors.email && touched.email ? errors.email : null}
-                                    />
-                                    <Field
-                                        margin="normal"
-                                        as={TextField}
+                                    fullWidth
+                                    id="email"
+                                    label="Email Address"
+                                    name="email"
+                                    autoComplete="email"
+                                    autoFocus
+                                    error={errors.email && touched.email}
+                                    helperText={errors.email && touched.email ? errors.email : null}
+                                />
+                                <Field
+                                    margin="normal"
+                                    as={TextField}
 
-                                        fullWidth
-                                        name="password"
-                                        label="Password"
-                                        type={showPassword ? 'text' : 'password'}
-                                        id="password"
-                                        autoComplete="current-password"
-                                        error={errors.password && touched.password}
-                                        helperText={errors.password && touched.password ? errors.password : null}
-                                        InputProps={{
-                                            endAdornment: (
+                                    fullWidth
+                                    name="password"
+                                    label="Password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    id="password"
+                                    autoComplete="current-password"
+                                    error={errors.password && touched.password}
+                                    helperText={errors.password && touched.password ? errors.password : null}
+                                    InputProps={{
+                                        endAdornment: (
 
-                                                <InputAdornment position="end">
+                                            <InputAdornment position="end">
 
-                                                    <IconButton
-                                                        aria-label="toggle password visibility"
-                                                        onClick={handleTogglePasswordVisibility}
-                                                        edge="end"
-                                                    >
-                                                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                                                    </IconButton>
-                                                </InputAdornment>
-                                            ),
-                                        }}
-                                    />
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleTogglePasswordVisibility}
+                                                    edge="end"
+                                                >
+                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
 
-                                    <Button
-                                        type="submit"
-                                        fullWidth
-                                        variant="contained"
-                                        sx={{ mt: 3, mb: 2 }}
-                                    >
-                                        Sign In
-                                    </Button>
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    sx={{ mt: 3, mb: 2 }}
+                                    
+                                >
+                                    Sign In
+                                </Button>
 
-                                </Form>
-                            )}
-                        </Formik>
-                    </Box>
-                </Grid>
+                            </Form>
+                        )}
+                    </Formik>
+                </Box>
             </Grid>
-      
+        </Grid>
+
     );
 }

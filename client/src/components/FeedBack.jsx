@@ -9,16 +9,14 @@ import {
     Typography,
     ThemeProvider,
     createTheme,
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
     Box,
     Rating,
-    InputAdornment,
     IconButton,
+    Grid,
 } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -29,6 +27,7 @@ import { jwtDecode } from 'jwt-decode';
 import toast from 'react-hot-toast';
 import { IMaskInput } from 'react-imask';
 import { useNavigate } from 'react-router-dom';
+import Select from 'react-select';
 
 const TextMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
     const { onChange, ...other } = props;
@@ -56,24 +55,6 @@ const lightTheme = createTheme({
             default: '#f5f5f5',
         },
     },
-    components: {
-        MuiOutlinedInput: {
-            styleOverrides: {
-                root: {
-                    '& $notchedOutline': {
-                        borderColor: '#f5f5f5',
-                    },
-                },
-            },
-        },
-        MuiButton: {
-            styleOverrides: {
-                root: {
-                    color: '#f5f5f5',
-                },
-            },
-        },
-    },
 });
 
 const darkTheme = createTheme({
@@ -83,65 +64,7 @@ const darkTheme = createTheme({
             main: '#f5f5f5',
         },
         background: {
-            default: '#f5f5f5',
-        },
-    },
-    components: {
-        MuiOutlinedInput: {
-            styleOverrides: {
-                root: {
-                    '& $notchedOutline': {
-                        borderColor: '#f5f5f5',
-                    },
-                },
-            },
-        },
-        MuiButton: {
-            styleOverrides: {
-                root: {
-                    color: '#000',
-                },
-            },
-        },
-    },
-});
-
-const blueTheme = createTheme({
-    palette: {
-        mode: 'light',
-        primary: {
-            main: '#a7d219',
-        },
-    },
-    components: {
-        MuiOutlinedInput: {
-            styleOverrides: {
-                root: {
-                    '& $notchedOutline': {
-                        borderColor: '#a7d219',
-                    },
-                },
-            },
-        },
-    },
-});
-
-const greenTheme = createTheme({
-    palette: {
-        mode: 'light',
-        primary: {
-            main: '#4caf50',
-        },
-    },
-    components: {
-        MuiOutlinedInput: {
-            styleOverrides: {
-                root: {
-                    '& $notchedOutline': {
-                        borderColor: '#4caf50',
-                    },
-                },
-            },
+            default: '#333',
         },
     },
 });
@@ -149,8 +72,6 @@ const greenTheme = createTheme({
 const themes = {
     light: lightTheme,
     dark: darkTheme,
-    blue: blueTheme,
-    green: greenTheme,
 };
 
 const labels = {
@@ -177,6 +98,7 @@ const validationSchema = Yup.object().shape({
     message: Yup.string().required('Message is required'),
 });
 
+
 const FeedBack = () => {
     const [decodedToken, setDecodedToken] = useState(null);
     const [rating, setRating] = useState(0);
@@ -186,16 +108,55 @@ const FeedBack = () => {
     const [cookies, setCookie] = useCookies(['accessToken', 'refreshToken']);
     const [themeMode, setThemeMode] = useState('light');
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+
     useEffect(() => {
         const decoded = jwtDecode(cookies.accessToken);
         setDecodedToken(decoded);
     }, [cookies]);
-    const handleSubmit = async (values) => {
 
+    // const handleSubmit = async (values) => {
+    //     const { username } = decodedToken;
+    //     setLoading(true);
+    //     console.log(values)
+    //     try {
+    //         const response = await axios.post(
+    //             `${import.meta.env.VITE_BACKEND_URL}/api/feedback`,
+    //             {
+    //                 ...values,
+    //                 rating: rating,
+    //                 username: username,
+    //             },
+    //             {
+    //                 headers: {
+    //                     Authorization: `Bearer ${cookies.accessToken}`,
+    //                 },
+    //             }
+    //         );
+    //         console.log(response.data)
+    //         if (response.status === 201 && response.data.message === 'Submit Successfull') {
+    //             setLoading(true)
+    //             setShowConf(true);
+    //             setTimeout(() => {
+    //                 setShowConf(false);
+    //             }, 4000);
+    //             setTimeout(() => {
+    //                 navigate('/logout');
+    //             }, 5000);
+    //         }
+    //     } catch (error) {
+    //         console.error(error);
+    //         toast.error('Something went wrong, please try again later');
+    //     } finally {
+    //         setLoading(false); // Stop loading
+    //     }
+    // };
+
+    const handleSubmit = async (values) => {
+     
         const { username } = decodedToken;
         setLoading(true);
-
+      
         try {
             const response = await axios.post(
                 `${import.meta.env.VITE_BACKEND_URL}/api/feedback`,
@@ -210,23 +171,24 @@ const FeedBack = () => {
                     },
                 }
             );
+          
             if (response.status === 201 && response.data.message === 'Submit Successfull') {
                 setShowConf(true);
                 setTimeout(() => {
                     setShowConf(false);
                 }, 4000);
-                toast.success(response.data.message);
                 setTimeout(() => {
                     navigate('/logout');
                 }, 5000);
             }
         } catch (error) {
-            console.error(error);
+            console.error('Error during submission:', error);
             toast.error('Something went wrong, please try again later');
         } finally {
-            setLoading(false); // Stop loading
+            setLoading(false); // Ensure loading is stopped
         }
     };
+    
 
     const toggleThemeMode = (mode) => {
         setThemeMode(mode);
@@ -234,52 +196,56 @@ const FeedBack = () => {
 
     return (
         <ThemeProvider theme={themes[themeMode]}>
-            {showConf && <CustomConfetti numberOfPieces={1500} />}
+            {showConf && <CustomConfetti numberOfPieces={1300} />}
 
             <Box
                 component="div"
                 sx={{
                     background: themes[themeMode].palette.mode === 'light'
                         ? 'linear-gradient(45deg, #b9e1f9 30%, #e9f0e2 90%)'
-                        : 'linear-gradient(45deg, #333333 30%, #111111 90%)',
+                        : 'linear-gradient(45deg, #333 30%, #111 90%)',
                     minHeight: '100vh',
                     display: 'flex',
-                    flexDirection: 'row',
+                    flexDirection: 'column',
                     justifyContent: 'center',
                     alignItems: 'center',
+                    padding: 2,
                 }}
             >
-                <FormControl sx={{ minWidth: 190, position: 'fixed', top: '30px', right: '100px' }}>
-                    <InputLabel id="demo-simple-select-label" sx={{ fontWeight: 'bold' }}>Select Mode</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        label="Select Form"
-                        onChange={(event) => toggleThemeMode(event.target.value)}
-                        value={themeMode}
-                        sx={{ borderColor: themes[themeMode].palette.primary.main }}
+                <Box
+                    sx={{
+                        position: 'fixed',
+                        top: 16,
+                        right: 16,
+                        display: 'flex',
+                        alignItems: 'center',
+                    }}
+                >
+                    <IconButton
+                        sx={{ mr: 2 }}
+                        onClick={() => toggleThemeMode(themeMode === 'light' ? 'dark' : 'light')}
+                        color="inherit"
                     >
-                        <MenuItem value={'light'}>Light Mode</MenuItem>
-                        <MenuItem value={'dark'}>Dark Mode</MenuItem>
-                    </Select>
-                </FormControl>
-                <Container maxWidth="sm">
+                        {themeMode === 'light' ? <Brightness4Icon fontSize='large' sx={{ color: 'black' }} /> : <Brightness7Icon fontSize='large' sx={{ color: 'white' }} />}
+                    </IconButton>
+                </Box>
+                <Container maxWidth="sm" sx={{ textAlign: 'center', mt: 4 }}>
                     <Typography
                         variant="h3"
                         sx={{
-                            textAlign: 'center',
-                            marginBottom: '20px',
+                            marginBottom: 4,
                             color: themeMode === 'dark' ? '#ffffff' : '#000000',
                         }}
                     >
                         Feedback Form
                     </Typography>
-                    <Card sx={{ padding: '20px', margin: 'auto' }}>
+                    <Card sx={{ padding: 3, boxShadow: 3 }}>
                         <CardContent>
                             <Formik
                                 initialValues={{
                                     name: '',
                                     email: '',
+                                   
                                     phone: '',
                                     message: '',
                                 }}
@@ -294,7 +260,7 @@ const FeedBack = () => {
                                         <Field
                                             as={TextField}
                                             autoFocus
-                                            placeholder="Fullname"
+                                            placeholder="Full Name"
                                             type="text"
                                             label="Name"
                                             name="name"
@@ -316,20 +282,25 @@ const FeedBack = () => {
                                             helperText={errors.email && touched.email ? <ErrorMessage>{errors.email}</ErrorMessage> : null}
                                         />
 
-                                        <Field
-                                            as={TextField}
-                                            type="tel"
-                                            label="Mobile No."
-                                            name="phone"
-                                            placeholder="+91 00000 00000"
-                                            fullWidth
-                                            margin="normal"
-                                            error={errors.phone && touched.phone}
-                                            helperText={errors.phone && touched.phone ? <ErrorMessage>{errors.phone}</ErrorMessage> : null}
-                                            InputProps={{
-                                                inputComponent: TextMaskCustom,
-                                            }}
-                                        />
+
+
+                                        <Grid >
+                                            <Field
+                                                as={TextField}
+                                                type="tel"
+                                                label="Mobile No."
+                                                name="phone"
+                                                placeholder="00000 00000"
+                                                fullWidth
+                                                margin="normal"
+                                                error={errors.phone && touched.phone}
+                                                helperText={errors.phone && touched.phone ? <ErrorMessage>{errors.phone}</ErrorMessage> : null}
+                                                InputProps={{
+                                                    inputComponent: TextMaskCustom,
+                                                }}
+                                            />
+                                        </Grid>
+
 
                                         <Field
                                             as={TextField}
@@ -344,7 +315,7 @@ const FeedBack = () => {
                                             helperText={errors.message && touched.message ? <ErrorMessage>{errors.message}</ErrorMessage> : null}
                                         />
 
-                                        <Box textAlign={'center'}>
+                                        <Box textAlign={'center'} sx={{ mb: 4 }}>
                                             <Typography>Share your experience</Typography>
                                             <Rating
                                                 name="hover-feedback"
@@ -371,18 +342,16 @@ const FeedBack = () => {
                                             {loading ? (
                                                 <LoadingButton
                                                     fullWidth
-                                                    sx={{ mt: 4, mb: 2 }}
-                                                    loading
+                                                    loading={loading}
                                                     variant="contained"
                                                 >
-                                                    Submit
+                                                    Loading...
                                                 </LoadingButton>
                                             ) : (
                                                 <Button
                                                     type="submit"
                                                     fullWidth
                                                     variant="contained"
-                                                    sx={{ mt: 6, mb: 2 }}
                                                     disabled={loading}
                                                 >
                                                     Submit

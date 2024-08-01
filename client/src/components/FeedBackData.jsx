@@ -94,7 +94,7 @@ const CustomToolbar = () => {
     const handleExport = () => {
         const rows = apiRef.current.getAllRowIds().map(id => apiRef.current.getRow(id));
         const columns = apiRef.current.getAllColumns().filter(col => col.field !== '__check__' && col.field !== 'Actions');
-      
+
         downloadExcel(rows, columns);
     };
 
@@ -108,7 +108,7 @@ const CustomToolbar = () => {
             columns.map(column => column.headerName),
             ...rows.map(row => columns.map(column => row[column.field]))
         ];
-     
+
         const worksheet = XLSX.utils.aoa_to_sheet(data);
         XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
         XLSX.writeFile(workbook, 'FeedbackData.xlsx');
@@ -120,7 +120,7 @@ const CustomToolbar = () => {
             <GridToolbarDensitySelector />
             <GridToolbarExport />
             <Box sx={{ flexGrow: 1 }} />
-            <Button startIcon={<DownloadIcon/>} variant='outlined' onClick={handleExport}>Excel</Button>
+            <Button startIcon={<DownloadIcon />} variant='outlined' onClick={handleExport}>Excel</Button>
         </GridToolbarContainer>
     );
 };
@@ -135,6 +135,7 @@ export default function FeedBackData() {
     };
 
     const handleDeleteClick = async (id) => {
+        const toastId = toast.loading('loading...')
         try {
             const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/deletefeedback/${id}`, {
                 headers: {
@@ -142,18 +143,18 @@ export default function FeedBackData() {
                 },
             });
             if (response.status === 404 && response.data.message === 'Feedback not found') {
-                toast.error(response.data.message);
+                toast.error(response.data.message, { id: toastId });
             }
             if (response.status === 400 && response.data.message === 'Invalid feedback ID') {
-                toast.error(response.data.message);
+                toast.error(response.data.message, { id: toastId });
             }
             if (response.status === 200 && response.data.message === 'Feedback deleted successfully') {
-                toast.success(response.data.message);
+                toast.success(response.data.message, { id: toastId });
                 getData();
             }
         } catch (error) {
             console.error(error);
-            toast.error("Something went wrong, please try again later");
+            toast.error("Something went wrong, please try again later", { id: toastId });
         }
     };
 
@@ -205,7 +206,7 @@ export default function FeedBackData() {
 
     const getData = async () => {
         try {
-            const data = await axios.get('http://localhost:3000/api/feedbackdata');
+            const data = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/feedbackdata`);
             const formattedData = data.data.data.map((row, index) => ({
                 ...row,
                 sr: index + 1,

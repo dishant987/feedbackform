@@ -4,6 +4,7 @@ import App from './App.jsx'
 import './index.css'
 import { Toaster } from 'react-hot-toast'
 import { CookiesProvider } from 'react-cookie'
+import AppAppBar from './components/AppBar.jsx'
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(

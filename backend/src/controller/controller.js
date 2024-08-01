@@ -325,7 +325,6 @@ export async function feedBack(req, res) {
 
     res.status(201).json({
       message: "Submit Successfull",
-      data: phone,
     });
   } catch (error) {
     console.log(error);

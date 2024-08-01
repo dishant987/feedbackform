@@ -1,6 +1,5 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,33 +12,24 @@ import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import ToggleColorMode from './ToggleColorMode';
 import { Link } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import toast from 'react-hot-toast';
 
-const logoStyle = {
-    width: '140px',
-    height: 'auto',
-    cursor: 'pointer',
-};
-
-function AppAppBar() {
-    const [open, setOpen] = React.useState(false);
+function AppNavBar() {
+    const [open, setOpen] = useState(false);
+    const [cookies, , removeCookie] = useCookies(['accessToken', 'refreshToken']);
 
     const toggleDrawer = (newOpen) => () => {
         setOpen(newOpen);
     };
 
-    const scrollToSection = (sectionId) => {
-        const sectionElement = document.getElementById(sectionId);
-        const offset = 128;
-        if (sectionElement) {
-            const targetScroll = sectionElement.offsetTop - offset;
-            sectionElement.scrollIntoView({ behavior: 'smooth' });
-            window.scrollTo({
-                top: targetScroll,
-                behavior: 'smooth',
-            });
-            setOpen(false);
-        }
+    const handleLogout = () => {
+        removeCookie('accessToken');
+        removeCookie('refreshToken');
+        toast.success('Logout successful');
     };
+
+    const isLoggedIn = !!cookies.accessToken;
 
     return (
         <div>
@@ -84,8 +74,21 @@ function AppAppBar() {
                                 px: 0,
                             }}
                         >
-                            <Typography variant="body1" color="darkblue" padding={3}>Feedback System</Typography>
-
+                            <Typography
+                                variant="h6"
+                                color="darkblue"
+                                sx={{
+                                    padding: 2,
+                                    fontSize: {
+                                        xs: '1.2rem',
+                                        sm: '1.4rem',
+                                        md: '1.6rem',
+                                        lg: '1.8rem',
+                                    },
+                                }}
+                            >
+                                Feedback System
+                            </Typography>
                         </Box>
                         <Box
                             sx={{
@@ -94,31 +97,40 @@ function AppAppBar() {
                                 alignItems: 'center',
                             }}
                         >
-
-                            <Link to={'/login'}>
-                                <Button
-                                    sx={{ borderRadius: 4, color: 'white'  }}
-                                    color="primary"
-                                    variant='outlined'
-                                    size="small"
-                                    
-                                  
-                                >
-                                    Sign In
-                                </Button>
-                            </Link>
-                            <Link to={"/signup"}>
+                            {isLoggedIn ? (
                                 <Button
                                     sx={{ borderRadius: 4 }}
                                     color="primary"
-                                    variant="contained"
+                                    variant='outlined'
                                     size="small"
-                                   
-
+                                    onClick={handleLogout}
                                 >
-                                    Sign up
+                                    Logout
                                 </Button>
-                            </Link>
+                            ) : (
+                                <>
+                                    <Link to={'/login'}>
+                                        <Button
+                                            sx={{ borderRadius: 4, color: 'white' }}
+                                            color="primary"
+                                            variant='outlined'
+                                            size="small"
+                                        >
+                                            Sign In
+                                        </Button>
+                                    </Link>
+                                    <Link to={"/signup"}>
+                                        <Button
+                                            sx={{ borderRadius: 4 }}
+                                            color="primary"
+                                            variant="contained"
+                                            size="small"
+                                        >
+                                            Sign Up
+                                        </Button>
+                                    </Link>
+                                </>
+                            )}
                         </Box>
                         <Box sx={{ display: { sm: '', md: 'none' } }}>
                             <Button
@@ -133,40 +145,53 @@ function AppAppBar() {
                             <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
                                 <Box
                                     sx={{
-                                        minWidth: '60dvw',
+                                        minWidth: '60vw',
                                         p: 2,
                                         backgroundColor: 'background.paper',
                                         flexGrow: 1,
                                     }}
                                 >
-
-
-
-                                    <Divider />
-                                    <MenuItem>
-                                        <Button
-                                            color="primary"
-                                            variant="contained"
-                                            component="a"
-                                            href="/signup"
-                                            target="_blank"
-                                            sx={{ width: '100%' }}
-                                        >
-                                            Sign up
-                                        </Button>
-                                    </MenuItem>
-                                    <MenuItem>
-                                        <Button
-                                            color="primary"
-                                            variant="outlined"
-                                            component="a"
-                                            href="/login"
-                                            target="_blank"
-                                            sx={{ width: '100%' }}
-                                        >
-                                            Sign in
-                                        </Button>
-                                    </MenuItem>
+                                    {isLoggedIn ? (
+                                        <>
+                                            <MenuItem>
+                                                <Button
+                                                    color="primary"
+                                                    variant="outlined"
+                                                    onClick={handleLogout}
+                                                    sx={{ width: '100%' }}
+                                                >
+                                                    Logout
+                                                </Button>
+                                            </MenuItem>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <MenuItem>
+                                                <Button
+                                                    color="primary"
+                                                    variant="contained"
+                                                    component="a"
+                                                    href="/signup"
+                                                  
+                                                    sx={{ width: '100%' }}
+                                                >
+                                                    Sign Up
+                                                </Button>
+                                            </MenuItem>
+                                            <MenuItem>
+                                                <Button
+                                                    color="primary"
+                                                    variant="outlined"
+                                                    component="a"
+                                                    href="/login"
+                                                  
+                                                    sx={{ width: '100%' }}
+                                                >
+                                                    Sign In
+                                                </Button>
+                                            </MenuItem>
+                                        </>
+                                    )}
                                 </Box>
                             </Drawer>
                         </Box>
@@ -177,9 +202,9 @@ function AppAppBar() {
     );
 }
 
-// AppAppBar.propTypes = {
-//     mode: PropTypes.oneOf(['dark', 'light']).isRequired,
-//     toggleColorMode: PropTypes.func.isRequired,
-// };
+AppNavBar.propTypes = {
+    mode: PropTypes.oneOf(['dark', 'light']).isRequired,
+    toggleColorMode: PropTypes.func.isRequired,
+};
 
-export default AppAppBar;
+export default AppNavBar;

@@ -1,7 +1,5 @@
-
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,39 +11,24 @@ import MenuItem from '@mui/material/MenuItem';
 import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import ToggleColorMode from './ToggleColorMode';
-import { Link } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import toast from 'react-hot-toast';
 
-const logoStyle = {
-    width: '140px',
-    height: 'auto',
-    cursor: 'pointer',
-};
-
-
-
 function AdminAppbar({ mode, toggleColorMode }) {
-
     const [open, setOpen] = useState(false);
-
     const [cookies, setCookie, removeCookie] = useCookies(['adminaccessToken']);
-
 
     const toggleDrawer = (newOpen) => () => {
         setOpen(newOpen);
     };
 
     const handleLogout = () => {
-        removeCookie('adminaccessToken')
-        toast.success('Logout successfull')
-        
-    }
-
+        removeCookie('adminaccessToken');
+        toast.success('Logout successful');
+    };
 
     const scrollToSection = (sectionId) => {
         const sectionElement = document.getElementById(sectionId);
-
         const offset = 128;
         if (sectionElement) {
             const targetScroll = sectionElement.offsetTop - offset;
@@ -101,27 +84,21 @@ function AdminAppbar({ mode, toggleColorMode }) {
                                 px: 0,
                             }}
                         >
-                            
-                            <Typography variant="body1" color="darkblue">Feedback System</Typography>
-                            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                                <MenuItem
-                                    onClick={() => scrollToSection('features')}
-                                    sx={{ py: '6px', px: '12px' }}
-                                >
-                                    <Typography variant="body2" color="text.primary">
-                                        Features
-                                    </Typography>
-                                </MenuItem>
-
-                                <MenuItem
-                                    onClick={() => scrollToSection('faq')}
-                                    sx={{ py: '6px', px: '12px' }}
-                                >
-                                    <Typography variant="body2" color="text.primary">
-                                        FAQ
-                                    </Typography>
-                                </MenuItem>
-                            </Box>
+                            <Typography
+                                variant="h6"
+                                color="darkblue"
+                                sx={{
+                                    padding: 2,
+                                    fontSize: {
+                                        xs: '1.2rem', // Small screens
+                                        sm: '1.4rem', // Medium screens
+                                        md: '1.6rem', // Large screens
+                                        lg: '1.8rem', // Extra large screens
+                                    },
+                                }}
+                            >
+                                Feedback System
+                            </Typography>
                         </Box>
                         <Box
                             sx={{
@@ -130,24 +107,17 @@ function AdminAppbar({ mode, toggleColorMode }) {
                                 alignItems: 'center',
                             }}
                         >
-
                             <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
-
                             <Button
-
                                 color="primary"
                                 variant='contained'
                                 size="small"
-                                component="a"
                                 onClick={handleLogout}
-
                             >
                                 Logout
                             </Button>
-
-
                         </Box>
-                        <Box sx={{ display: { sm: '', md: 'none' } }}>
+                        <Box sx={{ display: { sm: 'block', md: 'none' } }}>
                             <Button
                                 variant="text"
                                 color="primary"
@@ -160,7 +130,7 @@ function AdminAppbar({ mode, toggleColorMode }) {
                             <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
                                 <Box
                                     sx={{
-                                        minWidth: '60dvw',
+                                        minWidth: '60vw',
                                         p: 2,
                                         backgroundColor: 'background.paper',
                                         flexGrow: 1,
@@ -176,33 +146,20 @@ function AdminAppbar({ mode, toggleColorMode }) {
                                     >
                                         <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
                                     </Box>
-                                    <MenuItem onClick={() => scrollToSection('features')}>
-                                        Features
-                                    </MenuItem>
-                                    <MenuItem onClick={() => scrollToSection('testimonials')}>
-                                        Testimonials
-                                    </MenuItem>
-                                    <MenuItem onClick={() => scrollToSection('highlights')}>
-                                        Highlights
-                                    </MenuItem>
-                                    <MenuItem onClick={() => scrollToSection('pricing')}>
-                                        Pricing
-                                    </MenuItem>
-                                    <MenuItem onClick={() => scrollToSection('faq')}>FAQ</MenuItem>
                                     <Divider />
                                     <MenuItem>
                                         <Button
                                             color="primary"
                                             variant="contained"
                                             component="a"
-                                            href="/material-ui/getting-started/templates/sign-up/"
+                                            href=""
+                                            onClick={handleLogout}
                                             target="_blank"
                                             sx={{ width: '100%' }}
                                         >
                                             Logout
                                         </Button>
                                     </MenuItem>
-
                                 </Box>
                             </Drawer>
                         </Box>

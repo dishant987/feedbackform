@@ -11,8 +11,8 @@ config();
 const app = express();
 
 const corsOptions = {
-  origin:
-    "https://feedbackform-fronted.vercel.app",
+  origin: "https://feedbackform-fronted.vercel.app",
+  // origin: "http://localhost:5173",
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "x-csrf-token"],
@@ -52,7 +52,7 @@ app.use((err, req, res, next) => {
   res.status(500).send("Internal Server Error");
 });
 
-// Set up a cron job
+
 cron.schedule("* * * * *", () => {
   console.log("Cron job running every minute");
 });

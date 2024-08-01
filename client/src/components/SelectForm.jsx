@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -7,12 +7,11 @@ import Select from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 import { Container, Typography } from '@mui/material';
-import { useCookies } from 'react-cookie';
+import AppNavBar from './AppBar';
 
 const SelectForm = () => {
   const [form, setForm] = useState('');
   const navigate = useNavigate();
-
 
   const handleChange = (event) => {
     setForm(event.target.value);
@@ -24,49 +23,71 @@ const SelectForm = () => {
   };
 
   return (
-    <Container sx={{ textAlign: 'center' }}>
-      <Typography
-        variant="h1"
-        sx={{
-          display: 'flex',
-          flexDirection: { xs: 'column', md: 'row' },
-          justifyContent: 'center',
-          fontSize: 'clamp(3.5rem, 10vw, 4rem)',
-        }}
-      >
-        Select&nbsp;
+    <Container sx={{ paddingTop : 16, maxWidth: 'md' }}>
+      <AppNavBar />
+      <Box sx={{ textAlign: 'center', mb: 4 }}>
         <Typography
-          component="span"
-          variant="h1"
+          variant="h3"
           sx={{
-            fontSize: 'clamp(3rem, 10vw, 4rem)',
-            color: (theme) =>
-              theme.palette.mode === 'light' ? 'primary.main' : 'primary.light',
+            fontWeight: 600,
+            mb: 2,
+            fontSize: {
+              xs: '2rem', // Small screens
+              sm: '2.5rem', // Medium screens
+              md: '3rem', // Large screens
+              lg: '3.5rem', // Extra large screens
+            },
           }}
         >
-          Form
+          Select&nbsp;
+          <Typography
+            component="span"
+            variant="h3"
+            sx={{
+              color: (theme) =>
+                theme.palette.mode === 'light' ? 'primary.main' : 'primary.light',
+            }}
+          >
+            Form
+          </Typography>
         </Typography>
-      </Typography>
-
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '15px' }}>
-        <form onSubmit={handleSubmit} style={{ textAlign: 'center' }}>
-          <FormControl sx={{ minWidth: 190 }}>
-            <InputLabel id="demo-simple-select-label" sx={{ fontWeight: 'bold' }}>Select Form</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={form}
-              label="Select Form"
-              onChange={handleChange}
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            mx: 'auto',
+            maxWidth: '500px',
+            gap: 2,
+          }}
+        >
+          <form onSubmit={handleSubmit} style={{ width: '60%' }}>
+            <FormControl fullWidth sx={{ mb: 2 }}>
+              <InputLabel id="form-select-label" sx={{ fontWeight: 'bold' }}>
+                Select Form
+              </InputLabel>
+              <Select
+                labelId="form-select-label"
+                id="form-select"
+                value={form}
+                label="Select Form"
+                onChange={handleChange}
+                sx={{ borderRadius: 1 }}
+              >
+                <MenuItem value={'/feedback'}>Form 1</MenuItem>
+                <MenuItem value={'/feedback2'}>Form 2</MenuItem>
+              </Select>
+            </FormControl>
+            <Button
+              type="submit"
+              variant="contained"
+              size="large"
+              sx={{ width: '100%', height: '54px', borderRadius: 1 }}
             >
-              <MenuItem value={'/feedback'}>Form 1</MenuItem>
-              <MenuItem value={'/feedback2'}>Form 2</MenuItem>
-            </Select>
-          </FormControl>
-          <Button sx={{ ml: '20px', height: '54px' }} size='large' variant="contained" type="submit">
-            Submit
-          </Button>
-        </form>
+              Submit
+            </Button>
+          </form>
+        </Box>
       </Box>
     </Container>
   );
