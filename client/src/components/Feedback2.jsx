@@ -118,7 +118,7 @@ const Feedback2 = () => {
           setShowConf(false);
         }, 4000);
         setTimeout(() => {
-          // navigate('/logout');
+           navigate('/logout');
         }, 5000);
       }
     } catch (error) {
