@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import { createTheme, CssBaseline, Skeleton, ThemeProvider } from "@mui/material";
 import Home from "./components/Home";
-import Login from "./components/Login";
+const Login = lazy(() => import('./components/Login'))
 import SignUp from "./components/SignUp";
 import AdminLogin from "./components/AdminLogin";
 import FeedBack from "./components/FeedBack";
@@ -38,8 +38,59 @@ function App() {
       element: <Home />,
     },
     {
+
       path: "/login",
-      element: <Login />,
+      element: <Suspense fallback={
+        <Grid container component="main" sx={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Grid item xs={12} sm={8} md={4} component={Paper} elevation={6} square sx={{ borderRadius: 4 }}>
+            <Box
+              sx={{
+                my: 8,
+                mx: 4,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+
+              <Skeleton variant="circular" width={40} height={40} />
+
+
+              <Skeleton width={100} />
+
+
+              <Form>
+
+                <Skeleton variant="rectangular" height={56} sx={{ mb: 2 }} />
+
+
+                <Skeleton variant="rectangular" height={56} sx={{ mb: 2 }} />
+
+                <Grid container>
+                  <Grid item xs>
+                    <Skeleton width={100} />
+                  </Grid>
+                </Grid>
+
+                <Skeleton variant="rectangular" height={36} sx={{ mt: 3, mb: 2 }} />
+
+                <Grid container>
+                  <Grid item xs>
+                    <Skeleton width={150} />
+                  </Grid>
+                  <Grid item>
+                    <Skeleton width={200} />
+                  </Grid>
+                </Grid>
+              </Form>
+
+
+            </Box>
+          </Grid>
+        </Grid>
+      }>
+        <Login />
+      </Suspense>,
     },
     {
       path: "/signup",
