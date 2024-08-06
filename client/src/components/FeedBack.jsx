@@ -27,7 +27,7 @@ import { jwtDecode } from 'jwt-decode';
 import toast from 'react-hot-toast';
 import { IMaskInput } from 'react-imask';
 import { useNavigate } from 'react-router-dom';
-import Select from 'react-select';
+import Modal from '@mui/material/Modal';
 
 const TextMaskCustom = React.forwardRef(function TextMaskCustom(props, ref) {
     const { onChange, ...other } = props;
@@ -105,8 +105,15 @@ const FeedBack = () => {
     const [loading, setLoading] = useState(false);
     const [hover, setHover] = useState(-1);
     const [showConf, setShowConf] = useState(false);
-    const [cookies, setCookie] = useCookies(['accessToken', 'refreshToken']);
+    const [cookies] = useCookies(['accessToken', 'refreshToken']);
     const [themeMode, setThemeMode] = useState('light');
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => {
+        setOpen(false)
+        setShowConf(false)
+        navigate('/logout');
+    };
 
     const navigate = useNavigate();
 
@@ -153,10 +160,11 @@ const FeedBack = () => {
     // };
 
     const handleSubmit = async (values) => {
-     
+
+        setShowConf(true);
+        handleOpen()
         const { username } = decodedToken;
         setLoading(true);
-      
         try {
             const response = await axios.post(
                 `${import.meta.env.VITE_BACKEND_URL}/api/feedback`,
@@ -171,16 +179,12 @@ const FeedBack = () => {
                     },
                 }
             );
-          
+
             if (response.status === 201 && response.data.message === 'Submit Successfull') {
-                setShowConf(true);
-                setTimeout(() => {
-                    setShowConf(false);
-                }, 4000);
-                setTimeout(() => {
-                    navigate('/logout');
-                }, 5000);
+                toast.success(response.data.message)
+                handleOpen()
             }
+
         } catch (error) {
             console.error('Error during submission:', error);
             toast.error('Something went wrong, please try again later');
@@ -188,7 +192,7 @@ const FeedBack = () => {
             setLoading(false); // Ensure loading is stopped
         }
     };
-    
+
 
     const toggleThemeMode = (mode) => {
         setThemeMode(mode);
@@ -196,8 +200,42 @@ const FeedBack = () => {
 
     return (
         <ThemeProvider theme={themes[themeMode]}>
-            {showConf && <CustomConfetti numberOfPieces={1300} />}
+            {showConf && <CustomConfetti numberOfPieces={700} />}
 
+            <Modal
+                hideBackdrop={true}
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box
+                    sx={
+                        {
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            width: 400,
+                            bgcolor: 'background.paper',
+                            display: 'flex',
+                            flexDirection:'column',
+                            justifyContent: 'center',
+                            alignItems:'center',
+                            gap:'20px',
+                            boxShadow: 24,
+                            borderRadius: 1.5,
+                            p: 4,
+                        }
+                    }
+                >
+                    <Typography fontSize={'large'} sx={{
+                        
+                        color: themeMode === 'dark' ? '#ffffff' : '#000000'
+                    }}>FeedBack Completed next step </Typography>
+                    <Button variant='contained' onClick={() => handleClose()} >Continue</Button>
+                </Box>
+            </Modal>
             <Box
                 component="div"
                 sx={{
@@ -245,7 +283,7 @@ const FeedBack = () => {
                                 initialValues={{
                                     name: '',
                                     email: '',
-                                   
+
                                     phone: '',
                                     message: '',
                                 }}
@@ -255,7 +293,7 @@ const FeedBack = () => {
                                     setSubmitting(false);
                                 }}
                             >
-                                {({ errors, touched, isSubmitting }) => (
+                                {({ errors, touched }) => (
                                     <Form>
                                         <Field
                                             as={TextField}
@@ -316,7 +354,9 @@ const FeedBack = () => {
                                         />
 
                                         <Box textAlign={'center'} sx={{ mb: 4 }}>
-                                            <Typography>Share your experience</Typography>
+                                            <Typography sx={{
+                                                color: themeMode === 'dark' ? '#ffffff' : '#000000'
+                                            }}>Share your experience</Typography>
                                             <Rating
                                                 name="hover-feedback"
                                                 sx={{ fontSize: '36px' }}
