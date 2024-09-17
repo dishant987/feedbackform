@@ -1,5 +1,11 @@
-/* body{
-    background-image: url('../public/feedback.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-} */
+/* App.css */
+.slick-prev:before, .slick-next:before {
+    color: black;
+  }
+  .slick-dots li button:before {
+    color: black;
+  }
+  .slick-dots li.slick-active button:before {
+    color: #000;
+  }
+  

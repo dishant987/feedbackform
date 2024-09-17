@@ -111,7 +111,7 @@ function AppNavBar() {
                                 <>
                                     <Link to={'/login'}>
                                         <Button
-                                            sx={{ borderRadius: 4, color: 'white' }}
+                                            sx={{ borderRadius: 4 }}
                                             color="primary"
                                             variant='outlined'
                                             size="small"
@@ -185,7 +185,7 @@ function AppNavBar() {
                                                     component="a"
                                                     href="/login"
                                                   
-                                                    sx={{ width: '100%' }}
+                                                    sx={{ width: '100%',color:"blue" }}
                                                 >
                                                     Sign In
                                                 </Button>

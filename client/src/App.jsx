@@ -5,7 +5,7 @@ import {
 } from "react-router-dom";
 import { Box, createTheme, CssBaseline, Grid, Skeleton, ThemeProvider } from "@mui/material";
 import Home from "./components/Home";
-const Login = lazy(() => import('./components/Login'))
+const Login = lazy(() => import('./components/Login'));
 import SignUp from "./components/SignUp";
 import AdminLogin from "./components/AdminLogin";
 import FeedBack from "./components/FeedBack";
@@ -21,8 +21,7 @@ import ResentEmail from "./components/ResentEmail";
 import VerifyEmail from "./components/VerifyMail";
 import ForgotPasswordLink from "./components/forgotpassword/ForgotPasswordLink";
 import ForgotPassword from "./components/forgotpassword/ForgotPassword";
-import { Form } from 'formik';
-
+import Layout from "./components/Layout";
 
 function App() {
   const [mode, setMode] = useState("light");
@@ -36,117 +35,91 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Home />,
+      element: <Layout><Home /></Layout>,
     },
     {
-
       path: "/login",
-      element: <Suspense fallback={
-
-        <Skeleton variant="rectangular" width={210} height={118} >
-
-
-          <Skeleton variant="circular" width={40} height={40} />
-
-
-          <Skeleton width={100} />
-
-
-       
-
-            <Skeleton variant="rectangular" height={56} sx={{ mb: 2 }} />
-
-
-            <Skeleton variant="rectangular" height={56} sx={{ mb: 2 }} />
-
-            <Grid container>
-              <Grid item xs>
-                <Skeleton width={100} />
-              </Grid>
-            </Grid>
-
-            <Skeleton variant="rectangular" height={36} sx={{ mt: 3, mb: 2 }} />
-
-            <Grid container>
-              <Grid item xs>
-                <Skeleton width={150} />
-              </Grid>
-              <Grid item>
-                <Skeleton width={200} />
-              </Grid>
-            </Grid>
-        
-
-
-
-        </Skeleton>
-      }>
+      element: <Layout><Suspense fallback={<Skeleton variant="rectangular" width={210} height={118}>
+        <Skeleton variant="circular" width={40} height={40} />
+        <Skeleton width={100} />
+        <Skeleton variant="rectangular" height={56} sx={{ mb: 2 }} />
+        <Skeleton variant="rectangular" height={56} sx={{ mb: 2 }} />
+        <Grid container>
+          <Grid item xs>
+            <Skeleton width={100} />
+          </Grid>
+        </Grid>
+        <Skeleton variant="rectangular" height={36} sx={{ mt: 3, mb: 2 }} />
+        <Grid container>
+          <Grid item xs>
+            <Skeleton width={150} />
+          </Grid>
+          <Grid item>
+            <Skeleton width={200} />
+          </Grid>
+        </Grid>
+      </Skeleton>}>
         <Login />
-      </Suspense>,
+      </Suspense></Layout>,
     },
     {
       path: "/signup",
-      element: <SignUp />,
+      element: <Layout><SignUp /></Layout>,
     },
     {
       path: "/adminlog",
-      element: <AdminLogin />,
+      element: <Layout><AdminLogin /></Layout>,
     },
     {
       path: "/feedback",
-      element: <ProtectedRoute component={FeedBack} />,
+      element: <Layout><ProtectedRoute component={FeedBack} /></Layout>,
     },
     {
       path: "/feedback2",
-      element: <ProtectedRoute component={Feedback2} />,
+      element: <Layout><ProtectedRoute component={Feedback2} /></Layout>,
     },
     {
       path: "/selectform",
-      element: <ProtectedRoute component={SelectForm} />,
+      element: <Layout><ProtectedRoute component={SelectForm} /></Layout>,
     },
     {
       path: "/feedbackdata",
-      element: <AdminProtectedRoute component={FeedBackData} />,
+      element: <Layout><AdminProtectedRoute component={FeedBackData} /></Layout>,
     },
     {
       path: "/editfeedbackdata/:id",
-      element: <AdminProtectedRoute component={AdminEditData} />,
+      element: <Layout><AdminProtectedRoute component={AdminEditData} /></Layout>,
     },
     {
       path: "/viewfeedback/:id",
-      element: <AdminProtectedRoute component={AdminViewFeedback} />,
+      element: <Layout><AdminProtectedRoute component={AdminViewFeedback} /></Layout>,
     },
     {
       path: "/logout",
-      element: <ProtectedRoute component={Logout} />,
+      element: <Layout><ProtectedRoute component={Logout} /></Layout>,
     },
     {
       path: "/resentemailverify",
-      // element: <ProtectedRoute component={ResentEmail} />,
-      element: <ResentEmail />,
+      element: <Layout><ResentEmail /></Layout>,
     },
     {
       path: "/verifyemail",
-      // element: <ProtectedRoute component={ResentEmail} />,
-      element: <VerifyEmail />,
+      element: <Layout><VerifyEmail /></Layout>,
     },
     {
       path: "/forgotpasswordlink",
-      // element: <ProtectedRoute component={ResentEmail} />,
-      element: <ForgotPasswordLink />,
+      element: <Layout><ForgotPasswordLink /></Layout>,
     },
     {
       path: "/forgotpassword",
-      // element: <ProtectedRoute component={ResentEmail} />,
-      element: <ForgotPassword />,
+      element: <Layout><ForgotPassword /></Layout>,
     },
   ]);
+
   return (
     <ThemeProvider theme={theme}>
-
       <CssBaseline />
       <RouterProvider router={router} />
-      {/* <Home toggleColorMode={toggleColorMode} /> */}
     </ThemeProvider>
   );
 }
